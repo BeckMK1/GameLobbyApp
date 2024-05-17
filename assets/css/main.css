@@ -1,0 +1,68 @@
+:root{
+    #app[data-theme='dark']{
+        --primaryBg: hsl(0, 0%, 10%);
+        --secondaryBg: hsl(0, 0%, 20%);
+        --tertiaryBg: hsl(0, 0%, 30%);
+        --hlColor:hsl(0, 72%, 47%);
+        --primaryText:hsl(0,0%,100%);
+        --secondaryText:hsl(0,0%,0%);
+    }
+    #app[data-theme='Light']{
+        --primaryBg: hsl(0, 0%, 90%);
+        --secondaryBg: hsl(0, 0%, 85%);
+        --tertiaryBg: hsl(0, 0%, 80%);
+        --hlColor:hsl(0, 72%, 47%);
+        --primaryText:hsl(0,0%,0%);
+        --secondaryText:hsl(0,0%,100%);
+    }
+    #app[data-font='Normal']{
+        --fontSm: 1rem;
+        --fontMd: 1.5rem;
+        --fontLg: 2rem;
+        --fontXl: 2.5rem;
+      }
+      #app[data-font='Small']{
+        --fontSm: 0.75rem;
+        --fontMd: 1.25rem;
+        --fontLg: 1.75rem;
+        --fontXl: 2.25rem;
+      }
+      #app[data-font='Large']{
+        --fontSm: 1.25rem;
+        --fontMd: 1.75rem;
+        --fontLg: 2.25rem;
+        --fontXl: 2.75rem;
+      }
+}
+body{
+    margin: 0;
+}
+#app{
+    font-family: system-ui, sans-serif;
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+    min-height: 100vh;
+    background-color: var(--primaryBg);
+    transition: background-color 250ms;
+}
+p,a,span,div,input,select,button{
+  font-size: var(--fontSm);
+  transition: font-size 250ms;
+}
+h3,h4{
+  font-size: var(--fontMd);
+  transition: font-size  250ms;
+}
+h2{
+  font-size: var(--fontLg);
+  transition: font-size  250ms;
+}
+h1{
+  font-size: var(--fontXl);
+  transition: font-size  250ms;
+}
+p,a,h1,h3,h4,svg,div,span,input,select,button{
+  color: var(--primaryText);
+}
