@@ -3,7 +3,7 @@
         <nav>
             <div class="navLinks">
                 <NuxtLink v-for="(navLink, index) in navlinks" 
-                :style="currentRoute == '/' + navLink.link && index != 0 ? { top: 16 + ((68 + 16) * index) + 'px' } : {top: 'unset'}" 
+                :style="currentRoute == '/' + navLink.link && index != 0 ? { top: 32 + ((68 + 16) * index) + 'px' } : {top: 'unset'}" 
                 :to="navLink.link"><font-awesome-icon :icon="navLink.icon" /></NuxtLink>
             </div>
         </nav>
@@ -41,6 +41,7 @@
         display: grid;
         grid-template-columns: 100px 1fr;
         gap: 2rem;
+        padding-right: 2rem;
     }
     nav{
         height: 100vh;
@@ -48,6 +49,7 @@
         background-color: var(--secondaryBg);
         .navLinks{
             padding: 1rem;
+            padding-top: 2rem;
             display: flex;
             flex-direction: column;
             gap: 1rem;

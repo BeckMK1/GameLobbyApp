@@ -7,7 +7,7 @@
         --primaryText:hsl(0,0%,100%);
         --secondaryText:hsl(0,0%,0%);
     }
-    #app[data-theme='Light']{
+    #app[data-theme='light']{
         --primaryBg: hsl(0, 0%, 90%);
         --secondaryBg: hsl(0, 0%, 85%);
         --tertiaryBg: hsl(0, 0%, 80%);
@@ -15,24 +15,29 @@
         --primaryText:hsl(0,0%,0%);
         --secondaryText:hsl(0,0%,100%);
     }
-    #app[data-font='Normal']{
+    #app[data-font='normal']{
         --fontSm: 1rem;
         --fontMd: 1.5rem;
         --fontLg: 2rem;
         --fontXl: 2.5rem;
       }
-      #app[data-font='Small']{
+    #app[data-font='small']{
         --fontSm: 0.75rem;
         --fontMd: 1.25rem;
         --fontLg: 1.75rem;
         --fontXl: 2.25rem;
-      }
-      #app[data-font='Large']{
+    }
+    #app[data-font='large']{
         --fontSm: 1.25rem;
         --fontMd: 1.75rem;
         --fontLg: 2.25rem;
         --fontXl: 2.75rem;
-      }
+    }
+    --radiusSm:0.5rem;
+    --radiusMd:1rem;
+    --radiusLg:1.5rem;
+    --radiusXl:2rem;
+
 }
 body{
     margin: 0;
@@ -63,6 +68,7 @@ h1{
   font-size: var(--fontXl);
   transition: font-size  250ms;
 }
-p,a,h1,h3,h4,svg,div,span,input,select,button{
+p,a,h1,h2,h3,h4,svg,div,span,input,select,button{
   color: var(--primaryText);
+  margin: 0;
 }
