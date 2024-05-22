@@ -1,10 +1,17 @@
 <template>
-  <div id="app" data-theme="dark" data-font="normal">
+  <div id="app">
     <NuxtLayout>
       <NuxtPage></NuxtPage>
     </NuxtLayout>
   </div>
 </template>
 <script setup>
+  useHead({
+    bodyAttrs:{
+      dataTheme:'dark',
+      dataFont:'normal'
+      
+    }
+  })
 </script>
 <style lang="scss"></style>

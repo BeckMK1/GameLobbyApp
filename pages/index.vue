@@ -13,6 +13,7 @@
 		grid-template-columns: repeat(24, 1fr);
 		grid-template-rows: repeat(12, 1fr);
 		gap: 2rem;
+		padding: 2rem 0;
 	}
 	.suggestContainer{
 		grid-column: 1/7;

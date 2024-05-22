@@ -4,7 +4,7 @@
             <div class="navLinks">
                 <NuxtLink v-for="(navLink, index) in navlinks" 
                 :style="currentRoute == '/' + navLink.link && index != 0 ? { top: 32 + ((68 + 16) * index) + 'px' } : {top: 'unset'}" 
-                :to="navLink.link"><font-awesome-icon :icon="navLink.icon" /></NuxtLink>
+                :to="'/' + navLink.link"><font-awesome-icon :icon="navLink.icon" /></NuxtLink>
             </div>
         </nav>
         <slot></slot>
@@ -15,7 +15,7 @@
     const currentRoute = computed(()=> route.path)
     const navlinks = ref([
         {
-            link:'/',
+            link:'',
             icon:"fa-solid fa-house"
         },
         {
