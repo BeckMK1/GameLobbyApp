@@ -1,6 +1,6 @@
 <template>
 	<div>
-            <LobbypageLobbyCom></LobbypageLobbyCom>
+        <LobbypageLobbyCom></LobbypageLobbyCom>
     </div>
 </template>
 <script setup>

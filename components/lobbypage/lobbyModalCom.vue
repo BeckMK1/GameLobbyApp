@@ -40,6 +40,7 @@ const porps = defineProps({
 .modal{
     width: 100%;
     height: 100%;
+    box-sizing: border-box;
     background-color: var(--secondaryBg);
     border-radius: var(--radiusMd);
     padding: 3rem 5rem;
