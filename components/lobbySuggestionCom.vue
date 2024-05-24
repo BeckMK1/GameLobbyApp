@@ -54,7 +54,7 @@ const suggestGames = ref([
 </script>
 <style lang="scss" scoped>
     .suggestContainer{
-        background-color: var(--tertiaryBg);
+        background-color: var(--secondaryBg);
         padding: 1rem;
         border-radius: var(--radiusMd);
         display: flex;
@@ -67,7 +67,7 @@ const suggestGames = ref([
         }
         .suggest{
             border-radius: var(--radiusMd);
-            background-color: var(--primaryBg);
+            background-color: var(--tertiaryBg);
             display: grid;
             grid-template-columns:repeat(12, 1fr);
             padding: 1rem;

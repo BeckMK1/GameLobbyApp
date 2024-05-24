@@ -64,6 +64,8 @@
         justify-content: space-between;
         align-items: center;
         z-index: 2;
+        background-color: var(--secondaryBg);
+        border-radius: var(--radiusMd);
         .arrowBtn{
             cursor: pointer;
             svg{

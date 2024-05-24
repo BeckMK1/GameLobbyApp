@@ -42,11 +42,17 @@
         grid-template-columns: 100px 1fr;
         gap: 2rem;
         padding-right: 2rem;
+        &:has(.lobbyPage){
+            gap: 0;
+            padding-right: 0;
+        }
     }
     nav{
         height: 100vh;
         width: 100px;
         background-color: var(--secondaryBg);
+        position: relative;
+        z-index: 2;
         .navLinks{
             padding: 1rem;
             padding-top: 2rem;

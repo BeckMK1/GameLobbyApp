@@ -59,7 +59,7 @@ const games = ref([
 		}
 	}
 	.aboutText{
-		height: 150px;
+		height: 225px;
 	}
 	}
 	.settings-input{
@@ -70,6 +70,7 @@ const games = ref([
 		gap: 1rem;
 		padding: 2rem;
 		border-radius: var(--radiusMd);
+		height: fit-content;
 		.tagsInput{
 			position: relative;
 			textarea{

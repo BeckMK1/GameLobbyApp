@@ -48,8 +48,7 @@ function open(){
     border-bottom-left-radius: var(--radiusMd);
     border-bottom-right-radius: var(--radiusMd);
     &-inner{
-        display: flex;
-        flex-direction: column;
+        display: grid;
         padding: 2rem;
         height: fit-content;
         gap: 1rem;

@@ -30,7 +30,7 @@ const events = ref([
 </script>
 <style lang="scss" scoped>
     .eventsContainer{
-        background-color: var(--tertiaryBg);
+        background-color: var(--secondaryBg);
         padding: 1rem ;
         border-radius: var(--radiusMd);
         h2{
@@ -45,7 +45,7 @@ const events = ref([
             display: flex;
             flex-direction: column;
             gap: 1rem;
-            background-color: var(--primaryBg);
+            background-color: var(--tertiaryBg);
             padding:1rem;
             border-radius: var(--radiusMd);
             h3{
