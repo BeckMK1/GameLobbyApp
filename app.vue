@@ -15,17 +15,19 @@ const glStore = useGlStore()
       
     }
   })
-  const userInfo = useCookie(
-        'userInfo',
-        {
-            default: () => ({}),
-            watch: true,
-            maxAge:86400,
-        }
-    )
-watch(userInfo, async (newValue, oldValue) =>{
+const authCookie = useCookie('authCookie', {
+  default: () => (null),
+  sameSite: 'none', 
+  secure: true, // change to true in prod
+  httpOnly: false,
+  watch: true,
+  maxAge: 86400, // 24 
+})
+
+glStore.setUserData(authCookie.value)
+watch(authCookie, async (newValue, oldValue) =>{
   if(oldValue != newValue){
-    glStore.setUserData(userInfo.value)
+    glStore.setUserData(authCookie.value)
   }
 })
 </script>

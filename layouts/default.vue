@@ -1,11 +1,12 @@
 <template>
 	<div class="defaultLayout">
-        <nav>
+        <nav v-show="authCookie != null">
             <div class="navLinks">
                 <NuxtLink v-for="(navLink, index) in navlinks" 
                 :style="currentRoute == '/' + navLink.link && index != 0 ? { top: 32 + ((68 + 16) * index) + 'px' } : {top: 'unset'}" 
                 :to="'/' + navLink.link"><font-awesome-icon :icon="navLink.icon" /></NuxtLink>
             </div>
+            <div class="logoutBtn" @click="logout"><font-awesome-icon icon="fa-solid fa-right-from-bracket" /></div>
         </nav>
         <slot></slot>
     </div>
@@ -13,6 +14,7 @@
 <script setup>
     const route = useRoute()
     const currentRoute = computed(()=> route.path)
+    const authCookie = useCookie('authCookie')
     const navlinks = ref([
         {
             link:'',
@@ -35,6 +37,10 @@
             icon:"fa-solid fa-user"
         },
     ])
+    function logout(){
+        authCookie.value = null
+            navigateTo('/login')
+    }
 </script>
 <style lang="scss" scoped>
     .defaultLayout{
@@ -45,6 +51,21 @@
         &:has(.lobbyPage){
             gap: 0;
             padding-right: 0;
+        }
+    }
+    .logoutBtn{
+        width: 68px;
+        height: 68px;
+        background-color: var(--tertiaryBg);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 100%;
+        margin: 0 auto;
+        cursor: pointer;
+        svg{
+            width: 30px;
+            height: auto;
         }
     }
     nav{

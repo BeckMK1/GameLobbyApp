@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="loginPage">
         <div v-if="isLoign == true" class="loginContainer">
             <input type="text" v-model="loginUsername" placeholder="username">
             <input type="password" v-model="loginPassword" placeholder="password">
@@ -9,7 +9,7 @@
             <input type="text" v-model="signupUsername" placeholder="username">
             <input type="text" v-model="signupEmail" placeholder="email">
             <input type="password" v-model="signupPassword" placeholder="password">
-            <button class="loginBtn">singup</button>
+            <button class="loginBtn" @click="signUp">singup</button>
         </div>
         <button class="toggleLogin" @click="isLoign = !isLoign">{{ isLoign == true ? 'Want to signup?': 'Want to login?' }}</button>
     </div>
@@ -21,33 +21,40 @@ const loginPassword = ref('')
 const signupUsername = ref('')
 const signupEmail = ref('')
 const signupPassword = ref('')
-const loggedinUser = ref([])
-const userInfo = useCookie(
-        'userInfo',
-        {
-            default: () => ({}),
-            watch: true,
-            maxAge:86400,
-        }
-    )
+const authCookie = useCookie('authCookie')
 async function login(){
-    const { data:loginInfo, pending, error, refresh } = await useFetch('http://localhost:8080/api/auth/signin', {
+    const loginInfo = await $fetch('http://localhost:8081/api/auth/signin', {
             method:"POST",
             body:{
                 username: loginUsername.value,
                 password: loginPassword.value
             }
         })
-        loggedinUser.value = loginInfo._rawValue
-        userInfo.value = {
-            username:userData.value.username,
-            token:userData.value.accessToken,
-            id:userData.value.id,
-            inLobby:userData.value.inLobby
-        } 
-    }
+        authCookie.value = loginInfo
+        navigateTo('/')
+}
+async function signUp(){
+    const loginInfo = await $fetch('http://localhost:8081/api/auth/signup', {
+            method:"POST",
+            body:{
+                username: signupUsername.value,
+                email: signupEmail.value,
+                password: signupPassword.value,
+            }
+        })
+        isLoign.value = true
+}
 </script>
 <style lang="scss" scoped>
+.loginPage{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
 .loginContainer{
     display: flex;
     flex-direction: column;
@@ -65,7 +72,8 @@ async function login(){
 button{
     background-color: var(--tertiaryBg);
     color: white;
-    padding: 0.3rem 1rem 0.5rem 1rem;
-    border-radius: var(--radius);
+    padding: 0.90rem 1rem 1rem 1rem;
+    border-radius: var(--radiusMd);
+    cursor: pointer;
 }
 </style>
