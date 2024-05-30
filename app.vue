@@ -21,7 +21,7 @@ const authCookie = useCookie('authCookie', {
   secure: true, // change to true in prod
   httpOnly: false,
   watch: true,
-  maxAge: 86400, // 24 
+  maxAge: 86400, // 24h 
 })
 
 glStore.setUserData(authCookie.value)

@@ -7,8 +7,8 @@
                     <RankIconCom :lobby-game="lobby.game" :lobby-rank="lobby.rank"></RankIconCom>
                 </div>
                 <div class="info">
-                    <p>Leader: {{ lobby.leader }}</p>
-                    <p>Party: {{ lobby.currentParty }} / {{ lobby.maxParty  }}</p>
+                    <p>leader: {{  leader.username }}</p>
+                    <p>Party: {{ lobby.players.length }} / {{ lobby.maxPlayers  }}</p>
                     <p>Win / lose: {{ lobby.wins }} - {{  lobby.lose }}</p>
                     <p>Status: {{ lobby.stauts }}</p>
                     <p>BH score: {{ lobby.behaviorScore }}</p>
@@ -19,8 +19,8 @@
             </div>
         </div>
         <Teleport to="body">
-            <div class="modalContainer"  v-show="modelOpen" @click="currentLobby.pop()">
-                <div class="modalBG"></div>
+            <div class="modalContainer" v-show="modelOpen">
+                <div class="modalBG" @click="currentLobby.pop()"></div>
                 <LobbypageLobbyModalCom v-show="modelOpen" :lobby-data="currentLobby"></LobbypageLobbyModalCom>
             </div>
         </Teleport>
@@ -29,72 +29,20 @@
 <script setup>
 const currentLobby = ref([])
 const modelOpen = ref(false)
-const lobbies = ref([
-    {
-        lobbyId:'1',
-        game: 'Dota 2',
-        name:'lobby name',
-        rank: 'Archon2',
-        leader:'user',
-        currentParty: '3',
-        maxParty:'5',
-        wins:'1',
-        lose:'1',
-        stauts:'idle',
-        behaviorScore: 12000,
-        tags:[
-            'eu',
-            'ranked'
-        ],
-        about:'placeholder text',
-        players:[
-            {
-                name:'beck',
-                ign:'beckMK',
-                rank:'Archon2',
-                tags:[
-                    'pos 3'
-                ]
-            },
-            {
-                name:'simon',
-                ign:'simon',
-                rank:'Archon2',
-                tags:[
-                    'pos 4'
-                ]
-            }
-        ]
-    },
-    {
-        lobbyId:'2',
-        game: 'Dota 2',
-        name:'lobby name',
-        rank: 'Archon2',
-        leader:'user',
-        currentParty: '3',
-        maxParty:'5',
-        wins:'1',
-        lose:'1',
-        stauts:'idle',
-        behaviorScore: 12000,
-        tags:[
-            'eu',
-            'ranked'
-        ],
-        about:'placeholder text',
-        players:[
-            {
-                name:'beck',
-                ing:'beckMK',
-                rank:'Archon2',
-                tags:[
-                    'pos 3'
-                ]
-            }
-        ]
+const leader = ref("")
+const { data:lobbies, pending, error, refresh } = await useFetch('http://localhost:8081/api/test/lobby', {
+            method:'GET',
+            lazy:true,
+})
+lobbies._rawValue.forEach(lobby => {
+ lobby.players.flatMap((player) => {
+    if(player.role != "leader"){
+        return
     }
-])
+    leader.value = player
+ })
+});
+
 watch(currentLobby.value, async () =>{
         if(currentLobby.value.length == 0){
             modelOpen.value = false
