@@ -20,7 +20,7 @@
             </div>
         <!-- <NuxtLink :to="{name:'lobby-id', params: {id:data.lobbyId}}" class="btn">Join</NuxtLink> -->
             <div class="modal-players">
-                <LobbypagePlayerCom :players="data.players" :game="data.game"></LobbypagePlayerCom>
+                <LobbypagePlayerCom v-for="player in data.players" :playerData="player" :game="data.game"></LobbypagePlayerCom>
             </div>
         </div>
     </div>

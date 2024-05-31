@@ -1,10 +1,9 @@
 <template>
-    <div class="player" v-for="player in players">
+    <div class="player" v-for="player in playerData">
         <div class="player-info">
             <RankIconCom :lobby-game="game" :lobby-rank="player.rank"></RankIconCom>
             <div class="names">
-                <p>{{ player.name }}</p>
-                <p>{{ player.ign }}</p>
+                {{ player.username }}
             </div>
         </div>
         <div class="player-tags">
@@ -15,9 +14,11 @@
 </template>
 <script setup>
 const porps = defineProps({
-    players:Object,
+    playerData:Object,
     game:String
 })
+   
+
 </script>
 <style lang="scss" scoped>
         .player{

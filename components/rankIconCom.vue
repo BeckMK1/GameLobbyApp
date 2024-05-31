@@ -1,14 +1,24 @@
 <template>
-	<div class="raknIcon">
-        <img v-if="currentRankIcon != ''" :src="currentRankIcon" alt="">
-        <div class="rankNoIcon" v-else>
-            {{ lobbyRank }}
+    <div>
+        <div class="raknIcon" v-if="lobbyRank == ''">
+            <div class="rankNoIcon">
+                no rank found
+            </div>
+        </div>
+        <div class="raknIcon" v-else >
+            <img v-if="currentRankIcon != ''" :src="currentRankIcon" alt="">
+            <div class="rankNoIcon" v-else>
+                {{ lobbyRank }}
+            </div>
         </div>
     </div>
 </template>
 <script setup>
 const props = defineProps({
-    lobbyRank:String,
+    lobbyRank:{
+        default:'',
+        type:String
+    },
     lobbyGame:String
 })
 const rankIcons = ref([
@@ -206,6 +216,7 @@ setCurrentRank()
         align-items: center;
         font-weight: bold;
         border-radius: var(--radiusSm);
+        text-align: center;
     }
 }
 </style>

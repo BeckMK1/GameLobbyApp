@@ -7,7 +7,10 @@
                     <RankIconCom :lobby-game="lobby.game" :lobby-rank="lobby.rank"></RankIconCom>
                 </div>
                 <div class="info">
-                    <p>leader: {{  leader.username }}</p>
+                    <div v-for="player in lobby.players" v-show="player.role == 'leader'">
+                        leader: {{  player.username }}
+                    </div>
+                    <p></p>
                     <p>Party: {{ lobby.players.length }} / {{ lobby.maxPlayers  }}</p>
                     <p>Win / lose: {{ lobby.wins }} - {{  lobby.lose }}</p>
                     <p>Status: {{ lobby.stauts }}</p>
@@ -29,19 +32,11 @@
 <script setup>
 const currentLobby = ref([])
 const modelOpen = ref(false)
-const leader = ref("")
-const { data:lobbies, pending, error, refresh } = await useFetch('http://localhost:8081/api/test/lobby', {
+const { data:lobbies, pending, status, error, refresh } = await useFetch('http://localhost:8081/api/test/lobby', {
             method:'GET',
             lazy:true,
 })
-lobbies._rawValue.forEach(lobby => {
- lobby.players.flatMap((player) => {
-    if(player.role != "leader"){
-        return
-    }
-    leader.value = player
- })
-});
+   
 
 watch(currentLobby.value, async () =>{
         if(currentLobby.value.length == 0){

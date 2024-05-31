@@ -34,6 +34,15 @@
 <script setup>
 import { useGlStore } from '../stores/glStore';
 const glStore = useGlStore()
+const authCookie = useCookie('authCookie', {
+  default: () => (null),
+  sameSite: 'none', 
+  secure: true, // change to true in prod
+  httpOnly: false,
+  watch: true,
+  maxAge: 86400, // 24h 
+})
+const currentPlaySettings = ref({})
 const playerError = ref(false)
 const testPlayer = ref('')
 const games = ref([
@@ -51,11 +60,24 @@ const players = ref([
 	{
 		username: glStore.userData.username,
 		id: glStore.userData.id,
-		role:"leader"
+		role:"leader",
+		tags: glStore.userData.tags,
+		links: glStore.userData.links,
+		gameSettings: currentPlaySettings.value
 	}
 ])
 const tags = ref([])
 const maxPlayers = ref(5)
+function setCurrentPlayerSettings(){
+	if(glStore.userData.gameSettings.length != 0){
+		glStore.userData.gameSettings.forEach((setting) =>{
+			if(setting.game == game.value){
+				currentPlaySettings.value = setting 
+			}
+		})
+	}
+}
+setCurrentPlayerSettings()
 async function createLobby(){
 	const lobbyInfo = await $fetch('http://localhost:8081/api/test/lobbyCreate', {
             method:"POST",
@@ -73,6 +95,8 @@ async function createLobby(){
 				maxPlayers: maxPlayers.value
             }
         })
+		authCookie.inLobby = true
+		console.log(lobbyInfo)
 }
 function addtags(){
 	const temptags = tag.value.split(',')
