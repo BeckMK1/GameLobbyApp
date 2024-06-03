@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="accordion">
         <div class="spoiler" @click="open">{{ title }} <font-awesome-icon :class="contentHight != 0 ? 'open' : '' " icon="fa-solid fa-chevron-down" /></div>
         <div class="content" :style="{height:contentHight + 'px'}">
             <div ref="content" class="content-inner">
@@ -23,6 +23,9 @@ function open(){
 }
 </script>
 <style lang="scss" scoped>
+.accordion{
+    margin-bottom: 1.5rem;
+}
 .spoiler{
     background-color: var(--tertiaryBg);
     padding: 1.5rem;

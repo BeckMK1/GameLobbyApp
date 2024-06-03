@@ -1,26 +1,52 @@
 <template>
 	<div class="profile">
 		<div class="info-input">
-			<input type="text" placeholder="display name">
-			<input type="text" placeholder="Email">
-			<textarea placeholder="About me"></textarea>
+			<input type="text" v-model="displayName" placeholder="display name">
+			<textarea placeholder="About me" v-model="aboutMe"></textarea>
 			<div class="addLink">
-				<input type="text" placeholder="link">
-				<div class="addBtn"><font-awesome-icon icon="fa-solid fa-plus" /></div>
+				<input type="text" v-model="link" placeholder="link">
+				<div class="addBtn" @click="links.push(link)"><font-awesome-icon icon="fa-solid fa-plus" /></div>
 			</div>
-			<div class="links tagsContainer"></div>
+			<div v-for="linkTag in links" class="links tagsContainer"><div>{{ linkTag }}</div></div>
 		</div>
 		<div class="settings-input">
 			<div class="addTag">
-				<input type="text" placeholder="link">
-				<div class="addBtn"><font-awesome-icon icon="fa-solid fa-plus" /></div>
+				<input type="text" v-model="tag" placeholder="tag">
+				<div class="addBtn" @click="tags.push(tag)"><font-awesome-icon icon="fa-solid fa-plus" /></div>
 			</div>
-			<div class="tags tagsContainer"></div>
+			<div  class="tags tagsContainer"><div v-for="tagTag in tags">{{ tagTag }}</div></div>
 		</div>
-		<button>Save</button>
+		<button @click="updataProfile">Save</button>
 	</div>
 </template>
 <script setup>
+import { useGlStore } from '../stores/glStore';
+const glStore = useGlStore()
+const displayName = ref(glStore.userData.displayName)
+const aboutMe = ref(glStore.userData.aboutMe)
+const link = ref("")
+const links = ref(glStore.userData.links)
+const tag = ref("")
+const tags = ref(glStore.userData.tags)
+async function updataProfile(){
+	try{
+	const update = await  $fetch(`http://localhost:8081/api/test/updataUserInfo/${glStore.userData.id}`, {
+            method:"PATCH",
+			headers:{
+                'x-access-token': glStore.userData.accessToken
+            },
+            body:{
+				displayName:displayName.value,
+				aboutMe:aboutMe.value,
+				links: links.value,
+				tags: tags.value
+            }
+	})
+	console.log(update)
+	} catch(err){
+		console.log(err)
+	}
+}
 </script>
 <style lang="scss" scoped>
 .profile{

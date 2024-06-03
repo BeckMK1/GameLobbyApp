@@ -56,12 +56,13 @@ const mode = ref("")
 const game = ref("")
 const links = ref([])
 const about = ref("")
+const playerTags = ref([])
 const players = ref([
 	{
 		username: glStore.userData.username,
 		id: glStore.userData.id,
 		role:"leader",
-		tags: glStore.userData.tags,
+		tags: playerTags.value,
 		links: glStore.userData.links,
 		gameSettings: currentPlaySettings.value
 	}
@@ -72,12 +73,12 @@ function setCurrentPlayerSettings(){
 	if(glStore.userData.gameSettings.length != 0){
 		glStore.userData.gameSettings.forEach((setting) =>{
 			if(setting.game == game.value){
-				currentPlaySettings.value = setting 
+				currentPlaySettings.value = setting
+				playerTags.value = glStore.userData.tags.concat(setting.tags)
 			}
 		})
 	}
 }
-setCurrentPlayerSettings()
 async function createLobby(){
 	const lobbyInfo = await $fetch('http://localhost:8081/api/test/lobbyCreate', {
             method:"POST",
@@ -114,7 +115,7 @@ async function getPlayer(){
                     'x-access-token': glStore.userData.accessToken
                 },
                 body:{
-                    username: testPlayer.value
+                    username: testPlayer.value,
                 }
     })
 	players.value.push(data)
@@ -122,7 +123,9 @@ async function getPlayer(){
 		playerError.value = true
 	}
 }
-
+watch(game, async()=>{
+	setCurrentPlayerSettings()
+})
 </script>
 <style lang="scss" scoped>
 .crateLobby{
