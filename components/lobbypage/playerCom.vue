@@ -1,5 +1,5 @@
 <template>
-    <div class="player" :style="playerData.role == 'leader'? {border:'solid 1px orange'}: '' ,playerData.id == glStore.userData.id ? {border:'solid 1px white'}: ''">
+    <div class="player" :style="[playerData.role == 'leader'? {border:'solid 1px orange'}: playerData.id == glStore.userData.id ? {border:'solid 1px white'}: '']">
         <div class="player-info">
             <RankIconCom :lobby-game="game" :lobby-rank="playerData.rank"></RankIconCom>
             <div class="names">
@@ -14,10 +14,13 @@
 </template>
 <script setup>
 const porps = defineProps({
-    playerData:Object,
+    playerData:{
+        default:{},
+        type:Object
+    },
     game:String
 })
-import { useGlStore } from '../stores/glStore';
+import { useGlStore } from '../../stores/glStore';
     const glStore = useGlStore()   
 
 </script>

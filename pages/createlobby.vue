@@ -57,8 +57,7 @@ const game = ref("")
 const links = ref([])
 const about = ref("")
 const playerTags = ref([])
-const players = ref([
-])
+const players = ref([])
 const tags = ref([])
 const maxPlayers = ref(5)
 function setCurrentPlayerSettings(){
@@ -98,8 +97,9 @@ async function createLobby(){
 				maxPlayers: maxPlayers.value
             }
         })
-		authCookie.inLobby = true
-		console.log(lobbyInfo)
+		authCookie.value.inLobby = lobbyInfo.id
+		console.log(lobbyInfo.id)
+		console.log(lobbyInfo.message)
 }
 function addtags(){
 	const temptags = tag.value.split(',')

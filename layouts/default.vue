@@ -13,8 +13,17 @@
 </template>
 <script setup>
     const route = useRoute()
+    import { useGlStore } from '../stores/glStore';
+    const glStore = useGlStore()
     const currentRoute = computed(()=> route.path)
-    const authCookie = useCookie('authCookie')
+    const authCookie = useCookie('authCookie', {
+        default: () => (null),
+        sameSite: 'none', 
+        secure: true, // change to true in prod
+        httpOnly: false,
+        watch: true,
+        maxAge: 86400, // 24h 
+        })
     const navlinks = ref([
         {
             link:'',
@@ -40,6 +49,22 @@
     function logout(){
         authCookie.value = null
             navigateTo('/login')
+    }
+    checkInLobby()
+    function checkInLobby(){
+        navlinks.value.forEach((link)=>{
+            if(glStore.userData.inLobby != ""){
+                if(link.link == 'createLobby'){
+                    link.link = `lobby/${glStore.userData.inLobby}`
+                    link.icon = "fa-solid fa-dungeon"
+                }
+            } else{
+                if(link.link.includes("lobby/")){
+                    link.link = "createLobby"
+                    link.icon = "fa-solid fa-plus"
+                }
+            }
+        })
     }
 </script>
 <style lang="scss" scoped>

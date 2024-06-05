@@ -3,21 +3,19 @@
         <div class="filter-content" :style="{height:contentHight + 'px'}">
             <div ref="content" class="contnet-inner">
                 <div class="filter-game">
-                    <select><option v-for="game in games" :value="game">{{ game }}</option></select>
-                    <select><option v-for="mode in modes" :value="mode">{{ mode }}</option></select>
+                    <select v-model="game"><option v-for="game in games" :value="game">{{ game }}</option></select>
+                    <select v-model="mode"><option v-for="mode in modes" :value="mode">{{ mode }}</option></select>
                 </div>
                 <div class="filter-tags">
                     <h3>Most used tags</h3>
-                    <div class="tag" v-for="tag in tags">
+                    <div class="tag" v-for="tag in selectTags">
                     <label :for="tag">{{ tag }}</label>
-                    <input :name="tag" type="checkbox">
+                    <input :name="tag" :value="tag" type="checkbox" v-model="selectedTags">
                     </div>
                 </div>
                 <div class="filter-search">
-                    <div class="search">
-                        <input type="text" placeholder="Search...">
-                    </div>
                     <select name="" id=""><option value="default">Default filter</option></select>
+                    <button class="searchBtn" @click="getLobbies">Search</button>
                 </div>
             </div>
         </div>
@@ -25,8 +23,29 @@
     </div>
 </template>
 <script setup>
+const emits = defineEmits(['sendFilterLobbies'])
 const contentHight = ref(0)
 const content = ref(null)
+const game = ref("")
+const mode = ref("")
+const selectedTags = ref([])
+const selectedFilter = ref({})
+const lobbies = ref(null)
+async function getLobbies(){
+    try{
+    const sendFilter = await $fetch('http://localhost:8081/api/test/filteredLobbies', {
+            method:"POST",
+            body:{
+                game: game.value,
+                mode: mode.value.toLowerCase(),
+                tags: selectedTags.value
+            }
+        })
+        emits("sendFilterLobbies", sendFilter)
+    } catch(err){
+        console.log(err)
+    }
+}
 function open(){
     if(contentHight.value == 0){
         contentHight.value = content.value.scrollHeight
@@ -42,8 +61,9 @@ const modes = ref([
     'Ranked',
     'Unranked'
 ])
-const tags = ref([
-    'English'
+const selectTags = ref([
+    "need pos 3",
+    "need pos 2"
 ])
 
 </script>
@@ -158,5 +178,14 @@ const tags = ref([
                 }
             }
         }
+    }
+    button{
+        color:var(--primaryText);
+        background-color: var(--tertiaryBg);
+        padding: 0.75rem 2rem;
+        font-size: var(--fontMd);
+        font-weight: 600;
+        border-radius: var(--radiusLg);
+        cursor: pointer;
     }
 </style>

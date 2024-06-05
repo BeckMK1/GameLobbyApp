@@ -21,7 +21,14 @@ const loginPassword = ref('')
 const signupUsername = ref('')
 const signupEmail = ref('')
 const signupPassword = ref('')
-const authCookie = useCookie('authCookie')
+const authCookie = useCookie('authCookie', {
+  default: () => (null),
+  sameSite: 'none', 
+  secure: true, // change to true in prod
+  httpOnly: false,
+  watch: true,
+  maxAge: 86400, // 24h 
+})
 async function login(){
     const loginInfo = await $fetch('http://localhost:8081/api/auth/signin', {
             method:"POST",

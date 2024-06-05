@@ -1,12 +1,16 @@
 <template>
 	<div class="lobbyPage">
-        <LobbypageLobbyFilterCom></LobbypageLobbyFilterCom>
+        <LobbypageLobbyFilterCom @send-filter-lobbies="getFilterLobbies"></LobbypageLobbyFilterCom>
         <div class="lobbies">
-            <LobbypageLobbyCom></LobbypageLobbyCom>
+            <LobbypageLobbyCom :filtered-lobbies="filteredLobbies"></LobbypageLobbyCom>
         </div>
     </div>
 </template>
 <script setup>
+const filteredLobbies = ref([])
+function getFilterLobbies(data){
+    filteredLobbies.value = data
+}
 </script>
 <style lang="scss" scoped>
 .lobbies{
