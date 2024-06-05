@@ -18,7 +18,7 @@
                     <p v-else>About Lobby</p>
                 </div>
             </div>
-        <!-- <NuxtLink :to="{name:'lobby-id', params: {id:data.lobbyId}}" class="btn">Join</NuxtLink> -->
+        <NuxtLink :to="{name:'lobby-id', params: {id:data._id}}" class="btn">Join</NuxtLink>
             <div class="modal-players">
                 <LobbypagePlayerCom v-for="player in data.players" :playerData="player" :game="data.game"></LobbypagePlayerCom>
             </div>

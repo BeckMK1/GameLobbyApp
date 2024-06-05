@@ -48,6 +48,7 @@
         grid-template-columns: 100px 1fr;
         gap: 2rem;
         padding-right: 2rem;
+        max-height: 100vh;
         &:has(.lobbyPage){
             gap: 0;
             padding-right: 0;

@@ -8,7 +8,7 @@
         <div class="raknIcon" v-else >
             <img v-if="currentRankIcon != ''" :src="currentRankIcon" alt="">
             <div class="rankNoIcon" v-else>
-                {{ lobbyRank }}
+                <img :src="currentRankIcon" alt="">
             </div>
         </div>
     </div>
@@ -189,7 +189,7 @@ function setCurrentRank(){
     for(let rankIcon of rankIcons.value){
         if(props.lobbyGame == rankIcon.game){
             for(let rank of rankIcon.ranks){
-                if(rank.title == props.lobbyRank){
+                if(rank.title.toLowerCase() == props.lobbyRank.toLowerCase()){
                     currentRankIcon.value = rank.icon
                 }
             }

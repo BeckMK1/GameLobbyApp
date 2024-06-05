@@ -1,13 +1,13 @@
 <template>
-    <div class="player" v-for="player in playerData">
+    <div class="player" :style="playerData.role == 'leader'? {border:'solid 1px orange'}: '' ,playerData.id == glStore.userData.id ? {border:'solid 1px white'}: ''">
         <div class="player-info">
-            <RankIconCom :lobby-game="game" :lobby-rank="player.rank"></RankIconCom>
+            <RankIconCom :lobby-game="game" :lobby-rank="playerData.rank"></RankIconCom>
             <div class="names">
-                {{ player.username }}
+                {{ playerData.username }}
             </div>
         </div>
         <div class="player-tags">
-            <div class="tag" v-for="tag in player.tags">{{ tag }}</div>
+            <div class="tag" v-for="tag in playerData.tags">{{ tag }}</div>
         </div>
         <div class="player-links"></div>
     </div>
@@ -17,7 +17,8 @@ const porps = defineProps({
     playerData:Object,
     game:String
 })
-   
+import { useGlStore } from '../stores/glStore';
+    const glStore = useGlStore()   
 
 </script>
 <style lang="scss" scoped>
@@ -48,6 +49,7 @@ const porps = defineProps({
             padding: 0.5rem;
             display: flex;
             flex-wrap: wrap;
+            gap: 0.5rem;
             .tag{
                 padding: 0.25rem 0.75rem 0.5rem 0.75rem;
                 background-color: var(--tertiaryBg);

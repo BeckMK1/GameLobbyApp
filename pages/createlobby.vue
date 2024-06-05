@@ -58,14 +58,6 @@ const links = ref([])
 const about = ref("")
 const playerTags = ref([])
 const players = ref([
-	{
-		username: glStore.userData.username,
-		id: glStore.userData.id,
-		role:"leader",
-		tags: playerTags.value,
-		links: glStore.userData.links,
-		gameSettings: currentPlaySettings.value
-	}
 ])
 const tags = ref([])
 const maxPlayers = ref(5)
@@ -75,6 +67,16 @@ function setCurrentPlayerSettings(){
 			if(setting.game == game.value){
 				currentPlaySettings.value = setting
 				playerTags.value = glStore.userData.tags.concat(setting.tags)
+				let currentPlayer = {
+					username: glStore.userData.username,
+					id: glStore.userData.id,
+					role:"leader",
+					tags: playerTags.value,
+					links: glStore.userData.links,
+					gameSettings: currentPlaySettings.value,
+					rank:setting.rank
+				}
+				players.value.push(currentPlayer)
 			}
 		})
 	}

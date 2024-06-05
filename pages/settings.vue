@@ -121,6 +121,10 @@ async function saveSetting(gameSetting){
 }
 </script>
 <style lang="scss" scoped>
+	.settings{
+		max-height: inherit;
+		box-sizing: border-box;
+	}
 	.createNewFilter{
 		position: relative;
 		margin-bottom: 1rem;
@@ -161,6 +165,8 @@ async function saveSetting(gameSetting){
 		box-sizing: border-box;
 		padding: 2rem;
 		border-radius: var(--radiusMd);
+		height: 100%;
+		overflow: scroll;
 	}
 	.inputFlex{
             display: flex;
@@ -189,5 +195,7 @@ async function saveSetting(gameSetting){
 		box-sizing: border-box;
 		padding: 2rem;
 		border-radius: var(--radiusMd);
+		height: 100%;
+		overflow: scroll;
 	}
 </style>
