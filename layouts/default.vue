@@ -15,6 +15,7 @@
     const route = useRoute()
     import { useGlStore } from '../stores/glStore';
     const glStore = useGlStore()
+    const inlobby = computed(()=> glStore.userData.inLobby)
     const currentRoute = computed(()=> route.path)
     const authCookie = useCookie('authCookie', {
         default: () => (null),
@@ -66,6 +67,9 @@
             }
         })
     }
+    watch(inlobby, async()=>{
+        checkInLobby()
+    })
 </script>
 <style lang="scss" scoped>
     .defaultLayout{

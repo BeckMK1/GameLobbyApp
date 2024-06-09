@@ -23,6 +23,8 @@
     </div>
 </template>
 <script setup>
+import { useGlStore } from '../../stores/glStore';
+const glStore = useGlStore()
 const emits = defineEmits(['sendFilterLobbies'])
 const contentHight = ref(0)
 const content = ref(null)
@@ -65,7 +67,9 @@ const selectTags = ref([
     "need pos 3",
     "need pos 2"
 ])
-
+watch(game, async()=>{
+    glStore.selectedGame = game.value
+})
 </script>
 <style lang="scss" scoped>
     .filter{

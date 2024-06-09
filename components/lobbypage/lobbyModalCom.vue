@@ -18,7 +18,7 @@
                     <p v-else>About Lobby</p>
                 </div>
             </div>
-        <NuxtLink :to="{name:'lobby-id', params: {id:data._id}}" class="btn">Join</NuxtLink>
+            <div class="btn" v-if="glStore.userData.inLobby == ''" @click="joinLobby(data._id)">Join</div>
             <div class="modal-players">
                 <LobbypagePlayerCom v-for="player in data.players" :playerData="player" :game="data.game"></LobbypagePlayerCom>
             </div>
@@ -26,9 +26,60 @@
     </div>
 </template>
 <script setup>
+import { useGlStore } from '../../stores/glStore';
+const glStore = useGlStore()
+const authCookie = useCookie('authCookie', {
+  default: () => (null),
+  sameSite: 'none', 
+  secure: true, // change to true in prod
+  httpOnly: false,
+  watch: true,
+  maxAge: 86400, // 24h 
+})
+const player = ref({})
+const currentPlaySettings = ref({})
+const playerTags = ref([])
 const porps = defineProps({
     lobbyData:Array
 })
+function setCurrentPlayerSettings(){
+	if(glStore.userData.gameSettings.length != 0){
+		glStore.userData.gameSettings.forEach((setting) =>{
+			if(setting.game ==  glStore.selectedGame){
+				currentPlaySettings.value = setting
+				playerTags.value = glStore.userData.tags.concat(setting.tags)
+				let currentPlayer = {
+					username: glStore.userData.username,
+					id: glStore.userData.id,
+					tags: playerTags.value,
+					links: glStore.userData.links,
+					gameSettings: currentPlaySettings.value,
+					rank:setting.rank
+				}
+				player.value = currentPlayer
+			}
+		})
+	}
+}
+setCurrentPlayerSettings()
+async function joinLobby(lobbyId){
+    try{
+    const lobbyInfo = await $fetch(`http://localhost:8081/api/test/lobbyJoin/${lobbyId}`,{
+            method:"PATCH",
+			headers:{
+                'x-access-token': glStore.userData.accessToken
+            },
+            body:{
+                id: glStore.userData.id,
+                player: player.value
+            }
+    })
+    authCookie.value.inLobby = lobbyInfo.id
+    navigateTo(`lobby/${lobbyInfo.id}`)
+    } catch(err){
+        console.log(err)
+    }
+}
 </script>
 <style lang="scss" scoped>
 .currentModal{

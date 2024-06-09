@@ -1,6 +1,9 @@
 <template>
 	<div class="currentLobby">
-        <h2>{{currentLobby.name}}</h2>
+        <div class="lobbyHeader">
+            <h2>{{currentLobby.name}}</h2>
+            <p @click="leaveLobby">Leave</p>
+        </div>
         <div class="lobbyInfo" v-if="leader == false">
             <h2>Lobby info</h2>
             <p class="inActiveInput">{{ currentLobby.status }}</p>
@@ -45,6 +48,14 @@
 <script setup>
     import { useGlStore } from '../stores/glStore';
     const glStore = useGlStore()
+    const authCookie = useCookie('authCookie', {
+    default: () => (null),
+    sameSite: 'none', 
+    secure: true, // change to true in prod
+    httpOnly: false,
+    watch: true,
+    maxAge: 86400, // 24h 
+    })
    const route = useRoute()
    const leader = ref(false)
    const newLink = ref("")
@@ -76,6 +87,23 @@ function isLeader(){
         }
     });
 }
+async function leaveLobby(){
+    try{
+    const userInfo = await $fetch(`http://localhost:8081/api/test/lobbyLeave/${route.params.id}`,{
+            method:"PATCH",
+			headers:{
+                'x-access-token': glStore.userData.accessToken
+            },
+            body:{
+				id: glStore.userData.id,
+            }
+    })
+    authCookie.value.inLobby = ""
+    navigateTo('/lobbies')
+    } catch(err){
+        console.log(err)
+    }
+}
 watch(lobby, async()=>{
     if(lobby._rawValue != null){
         currentLobby.value = lobby._rawValue
@@ -95,6 +123,21 @@ watch(lobby, async()=>{
     h2{
         grid-column: span 12;
         text-align: center;
+    }
+}
+.lobbyHeader{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    grid-column: 6/12;
+    p{
+        color: hsl(0, 70%, 50%);
+        font-weight: bold;
+        cursor: pointer;
+        transition: 250ms;
+        &:hover{
+            transform: scale(1.1);
+        }
     }
 }
 .lobbyInfo{
@@ -149,6 +192,9 @@ watch(lobby, async()=>{
     background-color: var(--secondaryBg);
     box-sizing: border-box;
     padding: 2rem;
+    gap: 1rem;
+    display: flex;
+    flex-direction: column;
     border-radius: var(--radiusMd);
     h2{
         text-align: center;

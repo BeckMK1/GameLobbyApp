@@ -81,6 +81,7 @@ function setCurrentPlayerSettings(){
 	}
 }
 async function createLobby(){
+	try{
 	const lobbyInfo = await $fetch('http://localhost:8081/api/test/lobbyCreate', {
             method:"POST",
 			headers:{
@@ -98,8 +99,10 @@ async function createLobby(){
             }
         })
 		authCookie.value.inLobby = lobbyInfo.id
-		console.log(lobbyInfo.id)
-		console.log(lobbyInfo.message)
+		navigateTo(`/lobby/${lobbyInfo.id}`)
+	}catch(err){
+		console.log(err)
+	}
 }
 function addtags(){
 	const temptags = tag.value.split(',')
