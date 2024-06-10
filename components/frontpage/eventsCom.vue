@@ -33,21 +33,30 @@ const events = ref([
         background-color: var(--secondaryBg);
         padding: 1rem ;
         border-radius: var(--radiusMd);
+        height: 100%;
+        overflow-x: scroll;
+        height: fit-content;
         h2{
             margin-bottom: 1rem;
         }
         .events{
-            display: grid;
+            gap: 0.5rem;
+            display: flex;
             gap: 2rem;
-            grid-template-columns: repeat(4, 1fr);
+            width: fit-content;
         }
         .event{
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 0.2rem;
             background-color: var(--tertiaryBg);
             padding:1rem;
             border-radius: var(--radiusMd);
+            width: 200px;
+            height: fit-content;
+            @media(min-width:1550px){
+                gap: 1rem;
+            }
             h3{
                 text-align: center;
             }

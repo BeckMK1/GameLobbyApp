@@ -12,19 +12,39 @@
 		display: grid;
 		grid-template-columns: repeat(24, 1fr);
 		grid-template-rows: repeat(12, 1fr);
-		gap: 2rem;
+		gap: 2rem 0;
 		padding: 2rem 0;
+		max-height: inherit;
+		overflow-y: scroll;
+		box-sizing: border-box;
+	}
+	.suggestContainer, .slideContainer, .eventsContainer{
+		grid-column: 1/25;
 	}
 	.suggestContainer{
-		grid-column: 1/7;
-		grid-row: 1/13;
+		grid-row: 8/12;
 	}
 	.slideContainer{
-		grid-column: 7/25;
 		grid-row: 1/8;
 	}
 	.eventsContainer{
-		grid-column: 7/25;
-		grid-row: 8/13;
+		grid-row: 12/21;
+	}
+	@media(min-width:1550px){
+		.page-home{
+			gap: 2rem;
+		}
+		.suggestContainer{
+			grid-column: 1/7;
+			grid-row: 1/13;
+		}
+		.slideContainer{
+			grid-column: 7/25;
+			grid-row: 1/8;
+		}
+		.eventsContainer{
+			grid-column: 7/25;
+			grid-row: 8/13;
+		}	
 	}
 </style>

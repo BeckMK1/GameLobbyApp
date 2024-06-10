@@ -30,5 +30,15 @@ watch(authCookie, async (newValue, oldValue) =>{
     glStore.setUserData(authCookie.value)
   }
 })
+function changeFont(){
+  if (window.matchMedia("(min-width: 1550px)").matches) {
+            useHead({bodyAttrs:{dataFont:'normal'}})
+        }else{
+          useHead({bodyAttrs:{dataFont:'small'}})
+        }
+}
+onMounted(() => {
+    window.addEventListener("resize", changeFont)
+    })
 </script>
 <style lang="scss"></style>

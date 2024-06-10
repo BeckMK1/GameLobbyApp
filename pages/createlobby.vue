@@ -1,9 +1,10 @@
 <template>
 	<div class="crateLobby">
 		<div class="info-input">
-			<input type="text" placeholder="Lobby name" v-model="name">
-			<select name="game" v-model="game"><option v-for="game in games" :value="game">{{ game }}</option></select>
+			<input type="text" placeholder="Lobby name*" v-model="name">
+			<select name="game" v-model="game"><option value="" disabled selected hidden>Game*</option><option v-for="game in games" :value="game">{{ game }}</option></select>
 			<select name="gameMode" v-model="mode" id="">
+				<option value="" disabled selected hidden>Game mode*</option>
 				<option value="ranked">Ranked</option>
 				<option value="unRanked">Unranked</option>
 			</select>
@@ -28,6 +29,7 @@
 			<div class="players tagsContainer"><div v-if="playerError == false" class="tag" v-for="player in players">{{ player.username }}</div></div>
 			<div class="playerError" v-if="playerError == true">player not found</div>
 		</div>
+		<div class="errorMessage" v-if="errorMessage != ''">Error: {{ errorMessage.toString() }}</div>
 		<button @click="createLobby">Create Lobby</button>
 	</div>
 </template>
@@ -45,10 +47,7 @@ const authCookie = useCookie('authCookie', {
 const currentPlaySettings = ref({})
 const playerError = ref(false)
 const testPlayer = ref('')
-const games = ref([
-	'Dota 2',
-	"CS 2"
-])
+const games = ref([])
 const link = ref("")
 const tag = ref("")
 const name = ref("")
@@ -60,6 +59,16 @@ const playerTags = ref([])
 const players = ref([])
 const tags = ref([])
 const maxPlayers = ref(5)
+const canCreate = ref(false)
+const errorMessage = ref("")
+function setValidGames(){
+	if(glStore.userData.gameSettings.length != 0){
+		glStore.userData.gameSettings.forEach((setting) =>{
+			games.value.push(setting.game)
+		})
+}
+}
+setValidGames()
 function setCurrentPlayerSettings(){
 	if(glStore.userData.gameSettings.length != 0){
 		glStore.userData.gameSettings.forEach((setting) =>{
@@ -80,7 +89,29 @@ function setCurrentPlayerSettings(){
 		})
 	}
 }
+function validateLobby(){
+	if(name.value == ""){
+		errorMessage.value = "Missing lobby name"
+		canCreate.value = false
+		return
+	}
+	if(game.value == ""){
+		errorMessage.value = "Missing game"
+		canCreate.value = false
+		return
+	}
+	if(mode.value == ""){
+		errorMessage.value = "Missing mode"
+		canCreate.value = false
+		return 
+	}
+	canCreate.value = true
+}
 async function createLobby(){
+	validateLobby()
+	if(canCreate.value == false){
+		return
+	}
 	try{
 	const lobbyInfo = await $fetch('http://localhost:8081/api/test/lobbyCreate', {
             method:"POST",
@@ -136,17 +167,26 @@ watch(game, async()=>{
 .crateLobby{
 	display: grid;
 	grid-template-columns: repeat(12, 1fr);
-	grid-template-rows: 1fr 100px;
-	gap: 2rem;
+	gap: 2rem 0;
+	overflow-y: scroll;
+	max-height: inherit;
+	box-sizing: border-box;
+	@media(min-width: 1550px) {
+		gap: 2rem;
+		grid-template-rows: 1fr 100px;
+	}
 	padding: 2rem 0;
 	.info-input{
-		grid-column: 1/4;
+		grid-column: 1/13;
 		background-color: var(--secondaryBg);
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
 		padding: 2rem;
 		border-radius: var(--radiusMd);
+			@media(min-width: 1550px) {
+				grid-column: 1/4;
+			}
 		.linkInput{
 		position: relative;
 		input{
@@ -159,7 +199,7 @@ watch(game, async()=>{
 	}
 	}
 	.settings-input{
-		grid-column: 4/13;
+		grid-column: 1/13;
 		background-color: var(--secondaryBg);
 		display: flex;
 		flex-direction: column;
@@ -167,6 +207,9 @@ watch(game, async()=>{
 		padding: 2rem;
 		border-radius: var(--radiusMd);
 		height: fit-content;
+		@media(min-width: 1550px) {
+			grid-column: 4/13;
+		}
 		.tagsInput{
 			position: relative;
 			textarea{
@@ -197,6 +240,14 @@ watch(game, async()=>{
 		font-weight: 600;
 		border-radius: var(--radiusXl);
 		cursor: pointer;
+	}
+	.errorMessage{
+		position: absolute;
+		left: 50%;
+		bottom: 10rem;
+		background-color: var(--tertiaryBg);
+		padding: 1rem;
+		transform: translateX(-20%);
 	}
 }
 </style>

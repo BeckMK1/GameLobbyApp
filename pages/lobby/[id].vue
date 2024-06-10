@@ -26,14 +26,14 @@
             </select>
             <label>Tags</label>
             <div class="linkInput">
-				<input type="text" v-model="newLink" placeholder="Tag">
-				<div class="addBtn" @click="currentLobby.links.push(link)"><font-awesome-icon icon="fa-solid fa-plus" /></div>
+				<input type="text" v-model="newTag" placeholder="Tag">
+				<div class="addBtn" @click="currentLobby.tags.push(newTag)"><font-awesome-icon icon="fa-solid fa-plus" /></div>
 			</div>
             <div class="tags"><div class="tag" v-for="tag in currentLobby.tags">{{ tag }}</div></div>
             <label>Links</label>
             <div class="linkInput">
-				<input type="text" v-model="newTag" placeholder="Link">
-				<div class="addBtn" @click="currentLobby.links.push(link)"><font-awesome-icon icon="fa-solid fa-plus" /></div>
+				<input type="text" v-model="newLink" placeholder="Link">
+				<div class="addBtn" @click="currentLobby.links.push(newTag)"><font-awesome-icon icon="fa-solid fa-plus" /></div>
 			</div>
             <div class="links"><div v-for="link in currentLobby.links" class="link">{{ link }}</div></div>
             <div class="inActiveTextarea">{{ currentLobby.about }}</div>

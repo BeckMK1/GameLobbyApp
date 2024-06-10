@@ -18,7 +18,11 @@
                     <p v-else>About Lobby</p>
                 </div>
             </div>
-            <div class="btn" v-if="glStore.userData.inLobby == ''" @click="joinLobby(data._id)">Join</div>
+            <div class="btn" v-if="glStore.userData.inLobby == '' && canJoin == true" @click="joinLobby(data._id)">Join</div>
+            <div class="noGameProfile" v-if="canJoin == false">
+               <p>Game profile missing</p> 
+                <NuxtLink to="/settings">make a game profile here</NuxtLink>
+            </div>
             <div class="modal-players">
                 <LobbypagePlayerCom v-for="player in data.players" :playerData="player" :game="data.game"></LobbypagePlayerCom>
             </div>
@@ -39,27 +43,33 @@ const authCookie = useCookie('authCookie', {
 const player = ref({})
 const currentPlaySettings = ref({})
 const playerTags = ref([])
+const canJoin = ref(false)
 const porps = defineProps({
     lobbyData:Array
 })
 function setCurrentPlayerSettings(){
-	if(glStore.userData.gameSettings.length != 0){
-		glStore.userData.gameSettings.forEach((setting) =>{
-			if(setting.game ==  glStore.selectedGame){
-				currentPlaySettings.value = setting
-				playerTags.value = glStore.userData.tags.concat(setting.tags)
-				let currentPlayer = {
-					username: glStore.userData.username,
-					id: glStore.userData.id,
-					tags: playerTags.value,
-					links: glStore.userData.links,
-					gameSettings: currentPlaySettings.value,
-					rank:setting.rank
-				}
-				player.value = currentPlayer
-			}
-		})
-	}
+	if(glStore.userData.gameSettings.length == 0){
+        canJoin.value = false
+        return
+    }
+    canJoin.value = glStore.userData.gameSettings.some(setting => setting.game == glStore.selectedGame)
+    if( canJoin.value == true){
+	glStore.userData.gameSettings.forEach((setting) =>{
+        if(setting.game == glStore.selectedGame){
+                    currentPlaySettings.value = setting
+                    playerTags.value = glStore.userData.tags.concat(setting.tags)
+                    let currentPlayer = {
+                        username: glStore.userData.username,
+                        id: glStore.userData.id,
+                        tags: playerTags.value,
+                        links: glStore.userData.links,
+                        gameSettings: currentPlaySettings.value,
+                        rank:setting.rank
+                    }
+                    player.value = currentPlayer
+        }
+	})
+    }
 }
 setCurrentPlayerSettings()
 async function joinLobby(lobbyId){
@@ -155,6 +165,13 @@ async function joinLobby(lobbyId){
             }
         }
     }
+    .noGameProfile{
+        grid-column: 5/9;
+        text-align: center;
+        p{
+            font-weight: bold;
+        }
+    }
     .btn{
         grid-column: 6/8;
         justify-self: center;
@@ -165,6 +182,7 @@ async function joinLobby(lobbyId){
         font-size: var(--fontMd);
         font-weight: 600;
         border-radius: var(--radiusLg);
+        cursor: pointer;
     }
     &-players{
         grid-row: 7/13;

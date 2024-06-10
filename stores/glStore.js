@@ -9,6 +9,9 @@ export const useGlStore = defineStore('glStore', {
         },
         setGame(data){
             this.selectedGame = data
+        },
+        setFilter(data){
+            this.userData.gameFilters.push(data)
         }
     },
 })

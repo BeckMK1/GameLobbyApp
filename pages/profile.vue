@@ -54,8 +54,9 @@ async function updataProfile(){
 	grid-template-columns: repeat(12, 1fr);
 	padding: 2rem 0;
 	gap: 2rem;
+	box-sizing: border-box;
 	.info-input{
-		grid-column: 1/4;
+		grid-column: span 12;
 		background-color: var(--secondaryBg);
 		border-radius: var(--radiusMd);
 		display: flex;
@@ -63,6 +64,9 @@ async function updataProfile(){
 		padding: 2rem;
 		gap: 1rem;
 		height: fit-content;
+		@media(min-width: 1550px){
+			grid-column: 1/4;
+		}
 		.addLink{
 			position: relative;
 			margin-top: 2rem;
@@ -75,7 +79,7 @@ async function updataProfile(){
 		}
 	}
 	.settings-input{
-		grid-column: 4/13;
+		grid-column: span 12;
 		background-color: var(--secondaryBg);
 		border-radius: var(--radiusMd);
 		display: flex;
@@ -83,6 +87,9 @@ async function updataProfile(){
 		padding: 2rem;
 		gap: 1rem;
 		height: fit-content;
+		@media(min-width: 1550px){
+			grid-column: 4/13;
+		}
 		.addTag{
 			position: relative;
 			input{

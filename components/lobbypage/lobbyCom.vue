@@ -1,26 +1,5 @@
 <template>
      <div class="lobbiesContainer">
-        <div class="lobby" v-if="filteredLobbies.length == 0" v-for="lobby of lobbies" @click="currentLobby.push(lobby)">
-            <h3>{{ lobby.name }}</h3>
-            <div class="lobby-content">
-                <div class="rankIcon">
-                    <RankIconCom :lobby-game="lobby.game" :lobby-rank="lobby.rank"></RankIconCom>
-                </div>
-                <div class="info">
-                    <div v-for="player in lobby.players" v-show="player.role == 'leader'">
-                        leader: {{  player.username }}
-                    </div>
-                    <p></p>
-                    <p>Party: {{ lobby.players.length }} / {{ lobby.maxPlayers  }}</p>
-                    <p>Win / lose: {{ lobby.wins }} - {{  lobby.lose }}</p>
-                    <p>Status: {{ lobby.stauts }}</p>
-                    <p>BH score: {{ lobby.behaviorScore }}</p>
-                </div>
-            </div>
-            <div class="lobby-tags">
-                <div class="tag" v-for="tag in lobby.tags">{{ tag }}</div>
-            </div>
-        </div>
         <div class="lobby filtered" v-if="filteredLobbies.length != 0" v-for="lobby of filteredLobbies" @click="currentLobby.push(lobby)">
             <h3>{{ lobby.name }}</h3>
             <div class="lobby-content">

@@ -60,6 +60,7 @@ const suggestGames = ref([
         display: flex;
         flex-direction: column;
         gap: 1rem;
+        overflow-y: scroll;
         .suggestGame{
             h3{
                 margin-bottom: 1rem;
@@ -69,30 +70,44 @@ const suggestGames = ref([
             border-radius: var(--radiusMd);
             background-color: var(--tertiaryBg);
             display: grid;
-            grid-template-columns:repeat(12, 1fr);
             padding: 1rem;
-            gap: 1rem;
+            grid-template-columns:repeat(12, 1fr);
+                @media(min-width:1550px){
+                    gap: 1rem;
+                }
             &-rank{
                 grid-column: 1/4;
                 display: flex;
                 justify-content: center;
                 align-self: center;
-                width: 100%;
-                height: 100%;
+                width: fit-content;
+                height: fit-content;
             }
             &-info{
-                grid-column: 4/8;
+                grid-column: 4/11;
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between;
+                @media(min-width:468px){
+                    grid-column: 4/8;
+                }
             }
             &-winLose{
-                grid-column: 8/13;
+                grid-column: 11/13;
                 justify-self: end;
                 display: flex;
                 flex-direction: column;
                 align-items: flex-end;
                 justify-content: space-between;
+                    p{
+                        display: none;
+                    }
+                @media(min-width:468px){
+                    grid-column: 8/13;
+                    p{
+                        display: block;
+                    }
+                }
                 svg{
                     width: 33px;
                     height: auto;

@@ -28,11 +28,12 @@ const glStore = useGlStore()
 const emits = defineEmits(['sendFilterLobbies'])
 const contentHight = ref(0)
 const content = ref(null)
-const game = ref("")
-const mode = ref("")
+const game = ref("Dota 2")
+const mode = ref("Ranked")
 const selectedTags = ref([])
 const selectedFilter = ref({})
 const lobbies = ref(null)
+getLobbies()
 async function getLobbies(){
     try{
     const sendFilter = await $fetch('http://localhost:8081/api/test/filteredLobbies', {
@@ -55,6 +56,7 @@ function open(){
     }
     contentHight.value = 0
 }
+
 const games = ref([
     'Dota 2',
     'CS 2'
@@ -67,6 +69,10 @@ const selectTags = ref([
     "need pos 3",
     "need pos 2"
 ])
+onMounted(()=>{
+    open()
+})
+glStore.setGame(game.value)
 watch(game, async()=>{
     glStore.selectedGame = game.value
 })

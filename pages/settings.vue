@@ -5,7 +5,8 @@
 				<input v-model="filterTitle" type="text">
 				<button @click="createFilter">Create</button>
 			</div>
-			<AccordionCom v-for="filter in filters" :title="filter.title">
+			<div v-if="filters.length != 0">
+				<AccordionCom v-for="filter in filters" :title="filter.title">
 				<div class="inputFlex">
 					<select name="game" v-model="filter.game" id="">
 						<option value="Dota 2">Dota 2</option>
@@ -21,13 +22,18 @@
 					<div class="addBtn" @click="filter.tags.push(filtertag)"><font-awesome-icon icon="fa-solid fa-plus" /></div>
 				</div>
 				<div class="tagsContainer"><div v-for="tag in filter.tags">{{ tag }}</div></div>
-			</AccordionCom>
+				</AccordionCom>
+			</div>
+			<div v-else class="settingPlaceholder">
+				<p class="mainPlaceholder">Seach filters</p>
+			</div>
 		</div>
 		<div class="games">
 			<div class="createGameSetting">
 				<select name="" id="" v-model="gameSettingTitle"><option v-for="game in games" :value="game">{{ game }}</option></select>
 				<button @click="createSetting">Create</button>
 			</div>
+			<div v-if="gameSettings.length != 0">
 			<AccordionCom v-for="gameSetting in gameSettings" :title="gameSetting.game">
 				<input type="text" v-model="gameSetting.ign" placeholder="in game name">
 				<div class="inputFlex">
@@ -43,12 +49,17 @@
 				<button @click="saveSetting(gameSetting)">Save</button>
 			</AccordionCom>
 		</div>
+		<div class="settingPlaceholder" v-else>
+			<p class="mainPlaceholder">Game profile</p>
+			<p>You must have a game profile before you can join a lobby of the game</p>
+		</div>
+		</div>
 	</div>
 </template>
 <script setup>
 import { useGlStore } from '../stores/glStore';
 const glStore = useGlStore()
-const filters = ref(glStore.userData.filters)
+const filters = ref(glStore.userData.gameFilters)
 const authCookie = useCookie('authCookie', {
   default: () => (null),
   sameSite: 'none', 
@@ -73,7 +84,7 @@ function createFilter(){
 		mode:"",
 		tags:[]
 	}
-	filters.value.push(filter)
+	glStore.setFilter(filter)
 }
 function createSetting(){
 	let setting = {
@@ -142,14 +153,15 @@ async function saveSetting(gameSetting){
 	}
 	.createGameSetting{
 		display: grid;
-		grid-template-columns: repeat(12, 1fr);
+		grid-template-columns: 1fr 100px;
+		gap: 1rem;
 		margin-bottom: 1rem;
+		@media(min-width: 450px){}
 		select{
-			grid-column: 1/11;
 			width: 100%;
 		}
 		button{
-			grid-column: 11/13;
+
 		}
 
 	}
@@ -160,13 +172,27 @@ async function saveSetting(gameSetting){
 		gap:2rem;
 	}
 	.filters{
-		grid-column: span 6;
+		grid-column: span 13;
 		background-color: var(--secondaryBg);
 		box-sizing: border-box;
 		padding: 2rem;
 		border-radius: var(--radiusMd);
 		height: 100%;
 		overflow: scroll;
+		@media(min-width: 1550px){
+			grid-column: span 6;
+		}
+		.settingPlaceholder{
+			.mainPlaceholder{
+				font-size: var(--fontXl);
+				text-align: center;
+				opacity: 0.3;
+				font-weight: bold;
+			}
+		}
+			
+		
+	
 	}
 	.inputFlex{
             display: flex;
@@ -190,12 +216,28 @@ async function saveSetting(gameSetting){
 			font-size: var(--fontMd);
 		}
 	.games{
-		grid-column: span 6;
+		grid-column: span 13;
 		background-color: var(--secondaryBg);
 		box-sizing: border-box;
 		padding: 2rem;
 		border-radius: var(--radiusMd);
 		height: 100%;
 		overflow: scroll;
+		.settingPlaceholder{
+			p{
+				text-align: center;
+				opacity: 0.3;
+				&:not(.mainPlaceholder){
+					font-style: italic;
+				}
+			}
+			.mainPlaceholder{
+				font-size: var(--fontXl);
+				font-weight: bold;
+			}
+		}
+		@media(min-width: 1550px){
+			grid-column: span 6;
+		}
 	}
 </style>

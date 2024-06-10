@@ -205,6 +205,7 @@ setCurrentRank()
     height: 100%;
     img{
         width: 100%;
+        max-width: 100px;
         object-fit: contain;
     }
     .rankNoIcon{
