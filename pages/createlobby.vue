@@ -12,7 +12,7 @@
 				<input type="text" v-model="link" placeholder="Link">
 				<div class="addBtn" @click="links.push(link)"><font-awesome-icon icon="fa-solid fa-plus" /></div>
 			</div>
-			<div class="links tagsContainer"><div class="tag" v-for="link in links">{{ link }}</div></div>
+			<div class="links tagsContainer"><div v-for="link in links"><LinkConverterCom :link="link"></LinkConverterCom></div></div>
 			<textarea class="aboutText" v-model="about" placeholder="About lobby"></textarea>
 		</div>
 		<div class="settings-input">
@@ -21,15 +21,15 @@
 				<div class="addBtn" @click="addtags"><font-awesome-icon icon="fa-solid fa-plus" /></div>
 			</div>
 			<div class="savedTags tagsContainer"></div>
-			<div class="tags tagsContainer"><div class="tag" v-for="tag in tags">{{ tag }}</div></div>
+			<div class="tags tagsContainer"><div class="tag tagDark"  v-for="tag in tags">{{ tag }}</div></div>
 			<div class="addPlayer">
 				<input type="text" v-model="testPlayer" placeholder="invite player">
 				<div class="addBtn" @click="getPlayer"><font-awesome-icon icon="fa-solid fa-plus" /></div>
 			</div>
-			<div class="players tagsContainer"><div v-if="playerError == false" class="tag" v-for="player in players">{{ player.username }}</div></div>
+			<div class="players tagsContainer"><div v-if="playerError == false" class="tag tagDark" v-for="player in players">{{ player.username }}</div></div>
 			<div class="playerError" v-if="playerError == true">player not found</div>
 		</div>
-		<div class="errorMessage" v-if="errorMessage != ''">Error: {{ errorMessage.toString() }}</div>
+        <ErrorCom :error-message="errorMessage"></ErrorCom>
 		<button @click="createLobby">Create Lobby</button>
 	</div>
 </template>
@@ -52,6 +52,7 @@ const link = ref("")
 const tag = ref("")
 const name = ref("")
 const mode = ref("")
+const rank = ref("")
 const game = ref("")
 const links = ref([])
 const about = ref("")
@@ -84,6 +85,7 @@ function setCurrentPlayerSettings(){
 					gameSettings: currentPlaySettings.value,
 					rank:setting.rank
 				}
+				rank.value = setting.rank
 				players.value.push(currentPlayer)
 			}
 		})
@@ -122,6 +124,7 @@ async function createLobby(){
 				name: name.value,
 				game: game.value,
 				mode: mode.value,
+				rank: rank.value,
 				links: links.value,
 				about: about.value,
 				tags: tags.value,
@@ -240,14 +243,6 @@ watch(game, async()=>{
 		font-weight: 600;
 		border-radius: var(--radiusXl);
 		cursor: pointer;
-	}
-	.errorMessage{
-		position: absolute;
-		left: 50%;
-		bottom: 10rem;
-		background-color: var(--tertiaryBg);
-		padding: 1rem;
-		transform: translateX(-20%);
 	}
 }
 </style>

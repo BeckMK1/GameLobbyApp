@@ -9,11 +9,13 @@
         <div class="player-tags">
             <div class="tag" v-for="tag in playerData.tags">{{ tag }}</div>
         </div>
-        <div class="player-links"></div>
+        <div class="player-links">
+            <div class="link" v-for="link in playerLinks"><LinkConverterCom :link="link"></LinkConverterCom></div>
+        </div>
     </div>
 </template>
 <script setup>
-const porps = defineProps({
+const props = defineProps({
     playerData:{
         default:{},
         type:Object
@@ -22,7 +24,16 @@ const porps = defineProps({
 })
 import { useGlStore } from '../../stores/glStore';
     const glStore = useGlStore()   
-
+const playerLinks = ref([])
+const specialLinks = ref([
+    "discord",
+    "dotabuff"
+])
+setPlayerLinks()
+function setPlayerLinks(){
+    if(playerLinks.value.length < 3)
+    playerLinks.value = props.playerData.links.filter(link => specialLinks.value.some(specialLink => link.includes(specialLink)))
+}
 </script>
 <style lang="scss" scoped>
         .player{
@@ -64,6 +75,13 @@ import { useGlStore } from '../../stores/glStore';
         &-links{
             grid-column: 10/12;
             height: 100%;
+            justify-self: end;
+            display: flex;
+            flex-direction: column;
+            gap:1rem;
+            flex-wrap: wrap;
+            align-items:flex-start;
+ 
         }
         }
 </style>

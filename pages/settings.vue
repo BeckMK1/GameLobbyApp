@@ -21,7 +21,7 @@
 					<input type="text" v-model="filtertag" placeholder="Add tags separate with ','">
 					<div class="addBtn" @click="filter.tags.push(filtertag)"><font-awesome-icon icon="fa-solid fa-plus" /></div>
 				</div>
-				<div class="tagsContainer"><div v-for="tag in filter.tags">{{ tag }}</div></div>
+				<div class="tagsContainer"><div class="tag tagDark" v-for="tag in filter.tags">{{ tag }}</div></div>
 				</AccordionCom>
 			</div>
 			<div v-else class="settingPlaceholder">
@@ -44,7 +44,7 @@
 					<input type="text" v-model="gameTag" placeholder="Add tags separate with ','">
 					<div class="addBtn" @click="gameSetting.tags.push(gameTag)"><font-awesome-icon icon="fa-solid fa-plus" /></div>
 				</div>
-				<div class="tagsContainer"><div v-for="tag in gameSetting.tags">{{ tag }}</div></div>
+				<div class="tagsContainer"><div class="tag tagDark" v-for="tag in gameSetting.tags">{{ tag }}</div></div>
 				<input type="text" v-model="gameSetting.gameProfile" placeholder="game profile link"> 
 				<button @click="saveSetting(gameSetting)">Save</button>
 			</AccordionCom>
@@ -54,6 +54,8 @@
 			<p>You must have a game profile before you can join a lobby of the game</p>
 		</div>
 		</div>
+        <ErrorCom :error-message="errorMessage"></ErrorCom>
+		<ConfermationCom :confermation-message="confrimMessage"></ConfermationCom>
 	</div>
 </template>
 <script setup>
@@ -77,6 +79,31 @@ const games = ref([
 	'Dota 2',
 	'CS 2'
 ])
+const errorMessage = ref("")
+const confrimMessage = ref("")
+function validateSettings(){
+	gameSettings.value.forEach(setting => {
+		if(setting.ign == ''){
+			errorMessage.value = "In game name missing"
+			return false
+		}
+		errorMessage.value = ""
+	});
+	return true
+}
+function validateFilter(){
+	filters.forEach(filter => {
+		if(filter.game == ''){
+			errorMessage.value == "no game in filter selected"
+			return false
+		}
+		if(filter.mode == ""){
+			errorMessage.value == "no game mode in filter selected"
+			return false
+		}
+		return true
+	});
+}
 function createFilter(){
 	let filter = {
 		title: filterTitle.value,
@@ -98,36 +125,41 @@ function createSetting(){
 	gameSettings.value.push(setting)
 }
 async function saveSetting(gameSetting){
-	try{
-	const update = await  $fetch(`http://localhost:8081/api/test/upadeteGamesettings/${glStore.userData.id}`, {
-            method:"PATCH",
-			headers:{
-                'x-access-token': glStore.userData.accessToken
-            },
-            body:{
-				game: gameSetting.game,
-				ign: gameSetting.ign,
-				rank: gameSetting.rank,
-				verrifaction: gameSetting.verrifactionLink,
-				tags: gameSetting.tags,
-				gameProfile: gameSetting.gameProfile
-            }
-	})
-	console.log(update)
-	} catch(err){
-		console.log(err)
-	}
-	try{
-		const data = await $fetch(`http://localhost:8081/api/test/currentUserData/${glStore.userData.id}`, {
-                method:'GET',
-                lazy:true,
-                headers:{
-                    'x-access-token': glStore.userData.accessToken
-                },
-    })
-	authCookie.value.gameSettings = data.gameSettings
-	} catch(err){
-		console.log(err)
+	if(validateSettings() == true){
+		try{
+		const update = await  $fetch(`http://localhost:8081/api/test/upadeteGamesettings/${glStore.userData.id}`, {
+				method:"PATCH",
+				headers:{
+					'x-access-token': glStore.userData.accessToken
+				},
+				body:{
+					game: gameSetting.game,
+					ign: gameSetting.ign,
+					rank: gameSetting.rank,
+					verrifaction: gameSetting.verrifactionLink,
+					tags: gameSetting.tags,
+					gameProfile: gameSetting.gameProfile
+				}
+		})
+		confrimMessage.value = update
+		setTimeout(()=>{
+			confrimMessage.value = ''
+		}, 2000)
+		} catch(err){
+			console.log(err)
+		}
+		try{
+			const data = await $fetch(`http://localhost:8081/api/test/currentUserData/${glStore.userData.id}`, {
+					method:'GET',
+					lazy:true,
+					headers:{
+						'x-access-token': glStore.userData.accessToken
+					},
+		})
+		authCookie.value.gameSettings = data.gameSettings
+		} catch(err){
+			console.log(err)
+		}
 	}
 }
 </script>

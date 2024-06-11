@@ -7,16 +7,18 @@
 				<input type="text" v-model="link" placeholder="link">
 				<div class="addBtn" @click="links.push(link)"><font-awesome-icon icon="fa-solid fa-plus" /></div>
 			</div>
-			<div v-for="linkTag in links" class="links tagsContainer"><div>{{ linkTag }}</div></div>
+			<div  class="links tagsContainer"><div class="tagContainer" v-for="linkTag in links"><div class="removeBtn" @click="removeLink(link)"><font-awesome-icon icon="fa-solid fa-x" /></div><LinkConverterCom :link="linkTag"></LinkConverterCom></div></div>
 		</div>
 		<div class="settings-input">
 			<div class="addTag">
 				<input type="text" v-model="tag" placeholder="tag">
 				<div class="addBtn" @click="tags.push(tag)"><font-awesome-icon icon="fa-solid fa-plus" /></div>
 			</div>
-			<div  class="tags tagsContainer"><div v-for="tagTag in tags">{{ tagTag }}</div></div>
+			<div  class="tags tagsContainer"><div class="tag tagDark" v-for="tagTag in tags">{{ tagTag }}</div></div>
 		</div>
 		<button @click="updataProfile">Save</button>
+		<ErrorCom v-if="confrimMessage == ''" :error-message="errorMessage"></ErrorCom>
+		<ConfermationCom v-if="errorMessage == ''" :confermation-message="confrimMessage"></ConfermationCom>
 	</div>
 </template>
 <script setup>
@@ -28,23 +30,41 @@ const link = ref("")
 const links = ref(glStore.userData.links)
 const tag = ref("")
 const tags = ref(glStore.userData.tags)
+const errorMessage = ref("")
+const confrimMessage = ref("")
+function validateProfile(){
+	if(displayName.value == ""){
+		errorMessage.value = "displayNeme is empty"
+		return false
+	}
+	errorMessage.value = ''
+	return true
+}
+function removeLink(link){
+	links.value.splice(links.value.indexOf(link), 1)
+}
 async function updataProfile(){
-	try{
-	const update = await  $fetch(`http://localhost:8081/api/test/updataUserInfo/${glStore.userData.id}`, {
-            method:"PATCH",
-			headers:{
-                'x-access-token': glStore.userData.accessToken
-            },
-            body:{
-				displayName:displayName.value,
-				aboutMe:aboutMe.value,
-				links: links.value,
-				tags: tags.value
-            }
-	})
-	console.log(update)
-	} catch(err){
-		console.log(err)
+	if(validateProfile() == true){
+		try{
+		const update = await  $fetch(`http://localhost:8081/api/test/updataUserInfo/${glStore.userData.id}`, {
+				method:"PATCH",
+				headers:{
+					'x-access-token': glStore.userData.accessToken
+				},
+				body:{
+					displayName:displayName.value,
+					aboutMe:aboutMe.value,
+					links: links.value,
+					tags: tags.value
+				}
+		})
+		confrimMessage.value = update
+		setTimeout(()=>{
+			confrimMessage.value = ''
+		}, 2000)
+		} catch(err){
+			console.log(err)
+		}
 	}
 }
 </script>
@@ -109,6 +129,12 @@ async function updataProfile(){
 		font-weight: 600;
 		border-radius: var(--radiusXl);
 		cursor: pointer;
+	}
+}
+.links{
+	div{
+		height: 100%;
+		box-sizing: border-box;
 	}
 }
 </style>

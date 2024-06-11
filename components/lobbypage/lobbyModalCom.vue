@@ -6,8 +6,7 @@
                 <div class="info">
                     <RankIconCom :lobby-game="data.game" :lobby-rank="data.rank"></RankIconCom>
                     <div class="state">
-                        <p>Status: {{ data.stauts }}</p>
-                        <p>BH score: {{ data.behaviorScore }}</p>
+                        <p>Status: {{ data.status }}</p>
                     </div>
                 </div>
                 <div class="tags">
@@ -143,13 +142,7 @@ async function joinLobby(lobbyId){
             box-sizing: border-box;
             padding: 1rem;
             border-radius: var(--radiusMd);
-            .tag{
-                padding: 0.25rem 0.75rem 0.5rem 0.75rem;
-                background-color: var(--tertiaryBg);
-                height: fit-content;
-                width: fit-content;
-                border-radius: var(--radiusMd);
-            }
+            
         }
         .about{
             grid-column:  10/13;

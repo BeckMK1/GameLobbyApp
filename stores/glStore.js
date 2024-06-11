@@ -1,7 +1,8 @@
 export const useGlStore = defineStore('glStore', {
     state: () => ({
         userData:{},
-        selectedGame: ""
+        selectedGame: "",
+        isLogin: true
     }),
     actions:{
         setUserData(data){
@@ -12,6 +13,9 @@ export const useGlStore = defineStore('glStore', {
         },
         setFilter(data){
             this.userData.gameFilters.push(data)
+        },
+        setLogin(data){
+            this.isLogin = data
         }
     },
 })

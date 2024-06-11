@@ -101,8 +101,49 @@ select{
   background-color: var(--primaryBg);
 }
 .tagsContainer{
-  padding: 2rem;
+  padding: 1rem;
   background-color: var(--tertiaryBg);
   min-height: 100px;
   border-radius: var(--radiusSm);
+  display: flex;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+}
+.tag{
+  padding: 0.25rem 0.75rem 0.5rem 0.75rem;
+  background-color: var(--tertiaryBg);
+  height: fit-content;
+  width: fit-content;
+  border-radius: var(--radiusMd);
+  box-sizing: border-box;
+}
+.tagDark{
+  background-color: var(--secondaryBg);
+}
+.tagContainer{
+  position: relative;
+}
+
+.removeBtn{
+  display: none;
+  opacity: 0;
+  background-color: hsl(0,50%,50%);
+  width: 22px;
+  height: 30px;
+  border-radius: 100%;
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: 250ms;
+  z-index: 99;
+}
+.tagContainer:hover .removeBtn{
+  display: flex;
+  opacity: 1;
+}
+.removeBtn svg{
+  height:12px;
 }

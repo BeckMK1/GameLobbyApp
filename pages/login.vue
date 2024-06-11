@@ -11,16 +11,20 @@
             <input type="password" v-model="signupPassword" placeholder="password">
             <button class="loginBtn" @click="signUp">singup</button>
         </div>
-        <button class="toggleLogin" @click="isLoign = !isLoign">{{ isLoign == true ? 'Want to signup?': 'Want to login?' }}</button>
+        <button class="toggleLogin" @click="setLoginState">{{ isLoign == true ? 'Want to signup?': 'Want to login?' }}</button>
+        <ErrorCom :error-message="errorMessage"></ErrorCom>
     </div>
 </template>
 <script setup>
-const isLoign = ref(true)
+import { useGlStore } from '../stores/glStore';
+const glStore = useGlStore()
+const isLoign = computed(() => glStore.isLogin)
 const loginUsername = ref('')
 const loginPassword = ref('')
 const signupUsername = ref('')
 const signupEmail = ref('')
 const signupPassword = ref('')
+const errorMessage = ref('')
 const authCookie = useCookie('authCookie', {
   default: () => (null),
   sameSite: 'none', 
@@ -29,7 +33,39 @@ const authCookie = useCookie('authCookie', {
   watch: true,
   maxAge: 86400, // 24h 
 })
+function checkLoginvaild(){
+    if(loginUsername.value == ""){
+        errorMessage.value = "username missing"
+        return false
+    }
+    if(loginPassword.value == ""){
+        errorMessage.value = "password missing"
+        return false
+    }
+    return true
+}
+function checksignUpvaild(){
+    if(signupUsername.value == ""){
+        errorMessage.value = "username missing"
+        return false
+    }
+    if(signupEmail.value == ""){
+        errorMessage.value = "email missing"
+        return false
+    }
+    if(signupPassword.value == ""){
+        errorMessage.value = "password missing"
+        return false
+    }
+    if(signupPassword.value.length <= 8){
+        errorMessage.value = "password must be 8 characters or greater"
+        return false
+    }
+    return true
+}
 async function login(){
+    if(checkLoginvaild() == true){
+    try{
     const loginInfo = await $fetch('http://localhost:8081/api/auth/signin', {
             method:"POST",
             body:{
@@ -39,8 +75,14 @@ async function login(){
         })
         authCookie.value = loginInfo
         navigateTo('/')
+    } catch(err){
+        console.log(err)
+    }
+    }
 }
 async function signUp(){
+    if(checksignUpvaild() == true){
+        try{
     const loginInfo = await $fetch('http://localhost:8081/api/auth/signup', {
             method:"POST",
             body:{
@@ -50,6 +92,17 @@ async function signUp(){
             }
         })
         isLoign.value = true
+    } catch(err){
+        console.log(err)
+    }
+    }
+}
+function setLoginState(){
+if(isLoign.value == true){
+    glStore.setLogin(false)
+}else{
+    glStore.setLogin(true)
+}
 }
 </script>
 <style lang="scss" scoped>
@@ -61,6 +114,7 @@ async function signUp(){
     flex-direction: column;
     align-items: center;
     gap: 2rem;
+    position: relative;
 }
 .loginContainer{
     display: flex;

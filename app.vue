@@ -23,7 +23,6 @@ const authCookie = useCookie('authCookie', {
   watch: true,
   maxAge: 86400, // 24h 
 })
-
 glStore.setUserData(authCookie.value)
 watch(authCookie, async (newValue, oldValue) =>{
   if(oldValue != newValue){
