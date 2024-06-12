@@ -49,6 +49,7 @@ body{
     border: none;
     outline: none;
     min-height: 100vh;
+    max-height: 100vh;
     background-color: var(--primaryBg);
     transition: background-color 250ms;
 }
@@ -78,6 +79,7 @@ button{
   margin: 0;
   border: none;
   outline: none;
+  cursor: pointer;
 }
 input, select, textarea{
   background-color: var(--tertiaryBg);

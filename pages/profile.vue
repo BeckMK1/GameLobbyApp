@@ -24,12 +24,12 @@
 <script setup>
 import { useGlStore } from '../stores/glStore';
 const glStore = useGlStore()
-const displayName = ref(glStore.userData.displayName)
-const aboutMe = ref(glStore.userData.aboutMe)
+const displayName = ref(glStore.user.displayName)
+const aboutMe = ref(glStore.user.aboutMe)
 const link = ref("")
-const links = ref(glStore.userData.links)
+const links = ref(glStore.user.links)
 const tag = ref("")
-const tags = ref(glStore.userData.tags)
+const tags = ref(glStore.user.tags)
 const errorMessage = ref("")
 const confrimMessage = ref("")
 function validateProfile(){
@@ -46,10 +46,10 @@ function removeLink(link){
 async function updataProfile(){
 	if(validateProfile() == true){
 		try{
-		const update = await  $fetch(`http://localhost:8081/api/test/updataUserInfo/${glStore.userData.id}`, {
+		const update = await  $fetch(`http://localhost:8081/api/test/updataUserInfo/${glStore.user.id}`, {
 				method:"PATCH",
 				headers:{
-					'x-access-token': glStore.userData.accessToken
+					'x-access-token': glStore.user.accessToken
 				},
 				body:{
 					displayName:displayName.value,

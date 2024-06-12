@@ -3,18 +3,22 @@
         <div class="filter-content" :style="{height:contentHight + 'px'}">
             <div ref="content" class="contnet-inner">
                 <div class="filter-game">
-                    <select v-model="game"><option v-for="game in games" :value="game">{{ game }}</option></select>
-                    <select v-model="mode"><option v-for="mode in modes" :value="mode">{{ mode }}</option></select>
+                    <select v-model="game"><option value="" selected disabled hidden>Your Games</option><option v-for="game in games" :value="game">{{ game }}</option></select>
+                    <select v-model="mode"><option value="" selected disabled hidden>Mode</option><option v-for="mode in modes" :value="mode">{{ mode }}</option></select>
                 </div>
                 <div class="filter-tags">
                     <h3>Most used tags</h3>
-                    <div class="tag" v-for="tag in selectTags">
+                    <div v-if="selectTags.length != 0" class="tag" v-for="tag in selectTags">
                     <label :for="tag">{{ tag }}</label>
                     <input :name="tag" :value="tag" type="checkbox" v-model="selectedTags">
                     </div>
+                    <div v-else class="tagsPlaceholder">
+                        <p class="tagsTitle">Not Tags found</p>
+                        <p>Select a filter to see tags</p>
+                    </div>
                 </div>
                 <div class="filter-search">
-                    <select name="" id=""><option value="default">Default filter</option></select>
+                    <select name="" id="" v-model="currentFilter"><option value="default" selected disabled hidden>Your filters</option> <option v-for="filter in glStore.user.userData.gameFilters" :value="filter">{{ filter.title }}</option></select>
                     <button class="searchBtn" @click="getLobbies">Search</button>
                 </div>
             </div>
@@ -28,11 +32,27 @@ const glStore = useGlStore()
 const emits = defineEmits(['sendFilterLobbies'])
 const contentHight = ref(0)
 const content = ref(null)
-const game = ref("Dota 2")
-const mode = ref("Ranked")
+const game = ref("")
+const mode = ref("")
 const selectedTags = ref([])
 const selectedFilter = ref({})
 const lobbies = ref(null)
+const currentFilter = ref('default')
+function open(){
+    if(contentHight.value == 0){
+        contentHight.value = content.value.scrollHeight
+        return 
+    }
+    contentHight.value = 0
+}
+const games = ref([
+])
+const modes = ref([
+    "Ranked",
+    "Unranked"
+])
+const selectTags = ref([
+])
 getLobbies()
 async function getLobbies(){
     try{
@@ -40,7 +60,7 @@ async function getLobbies(){
             method:"POST",
             body:{
                 game: game.value,
-                mode: mode.value.toLowerCase(),
+                mode: mode.value,
                 tags: selectedTags.value
             }
         })
@@ -49,32 +69,31 @@ async function getLobbies(){
         console.log(err)
     }
 }
-function open(){
-    if(contentHight.value == 0){
-        contentHight.value = content.value.scrollHeight
-        return 
-    }
-    contentHight.value = 0
+function setFilter(filter){
+    game.value = filter.game
+    mode.value = filter.mode
+    selectTags.value = filter.tags
 }
-
-const games = ref([
-    'Dota 2',
-    'CS 2'
-])
-const modes = ref([
-    'Ranked',
-    'Unranked'
-])
-const selectTags = ref([
-    "need pos 3",
-    "need pos 2"
-])
+function setyourGames(){
+    glStore.user.userData.gameSettings.forEach(setting => games.value.push(setting.game)) 
+}
+setyourGames()
 onMounted(()=>{
     open()
 })
 glStore.setGame(game.value)
 watch(game, async()=>{
-    glStore.selectedGame = game.value
+    glStore.setGame(game.value)
+    if(game.value != currentFilter.value.game){
+        currentFilter.value = 'default'
+        selectTags.value = []
+    }
+
+})
+watch(currentFilter, async (newValue, oldValue) =>{
+    if(newValue !== 'default'){
+        setFilter(currentFilter.value)
+    }
 })
 </script>
 <style lang="scss" scoped>
@@ -87,7 +106,7 @@ watch(game, async()=>{
             height: 0;
             transition: 250ms;
             .contnet-inner{
-                padding: 2rem;
+                padding: 1rem;
                 display: grid;
                 grid-template-columns: repeat(12, 1fr);
                 gap: 2rem;
@@ -96,13 +115,14 @@ watch(game, async()=>{
                 flex-direction: column;
                 gap: 1rem;
                 grid-column: 1/3;
+                grid-column: span 12;
                 select{
                     width: 100%;
                 }
                 }
                 .filter-tags{
                     gap: 1rem;
-                    grid-column: 3/11;
+                    grid-column: span 12;
                     justify-self: center;
                     background-color: var(--tertiaryBg);
                     width: 100%;
@@ -157,7 +177,7 @@ watch(game, async()=>{
                 }
                 .filter-search{
                     gap: 1rem;
-                    grid-column: 11/13;
+                    grid-column: span 12;
                     justify-self: end;
                     display: flex;
                     gap: 2rem;
@@ -170,9 +190,23 @@ watch(game, async()=>{
                         width: 100%;
                     }
                 }
-
+                @media(min-width: 1550px){
+                    padding: 2rem;
+                    .filter-game{
+                        grid-column: 1/3;
+                    }
+                    .filter-tags{
+                       grid-column: 3/11;
+                    }
+                    .filter-search{
+                        grid-column: 11/13;
+                    }
+                    .tagsPlaceholder{
+                        margin-top: 1rem;
+                    }
+                    }
+                }
             }
-        }
         .showBtn{
             height: 1rem;
             background-color: var(--secondaryBg);
@@ -197,5 +231,16 @@ watch(game, async()=>{
         font-weight: 600;
         border-radius: var(--radiusLg);
         cursor: pointer;
+    }
+    .tagsPlaceholder{
+        text-align: center;
+        margin-top:0.5rem ;
+        .tagsTitle{
+            font-size: var(--fontMd);
+            font-weight: bold;
+        }
+        p{
+            opacity: 0.3;
+        }
     }
 </style>

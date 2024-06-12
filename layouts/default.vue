@@ -15,11 +15,11 @@
     const route = useRoute()
     import { useGlStore } from '../stores/glStore';
     const glStore = useGlStore()
-    const changeInUser = computed(()=> glStore.userData)
+    const changeInUser = computed(()=> glStore.user.userData != undefined ? glStore.user.userData.inLobby : '')
     const navLinkSize = ref(68)
     const currentRoute = computed(()=> route.path)
     const authCookie = useCookie('authCookie', {
-        default: () => (null),
+        default: () => ([]),
         sameSite: 'none', 
         secure: true, // change to true in prod
         httpOnly: false,
@@ -54,11 +54,11 @@
     }
     checkInLobby()
     function checkInLobby(){
-        if(Object.keys(glStore.userData).length != 0){
+        if(glStore.user.userData != null){
             navlinks.value.forEach((link)=>{
-                if(glStore.userData.inLobby != ''){
+                if(glStore.user.userData.inLobby != ''){
                     if(link.link == 'createLobby'){
-                        link.link = `lobby/${glStore.userData.inLobby}`
+                        link.link = `lobby/${glStore.user.userData.inLobby}`
                         link.icon = "fa-solid fa-dungeon"
                     }
                 } else{

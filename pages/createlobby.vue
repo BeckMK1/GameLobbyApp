@@ -5,8 +5,8 @@
 			<select name="game" v-model="game"><option value="" disabled selected hidden>Game*</option><option v-for="game in games" :value="game">{{ game }}</option></select>
 			<select name="gameMode" v-model="mode" id="">
 				<option value="" disabled selected hidden>Game mode*</option>
-				<option value="ranked">Ranked</option>
-				<option value="unRanked">Unranked</option>
+				<option value="Ranked">Ranked</option>
+				<option value="Unranked">Unranked</option>
 			</select>
 			<div class="linkInput">
 				<input type="text" v-model="link" placeholder="Link">
@@ -37,7 +37,7 @@
 import { useGlStore } from '../stores/glStore';
 const glStore = useGlStore()
 const authCookie = useCookie('authCookie', {
-  default: () => (null),
+	default: () => ([]),
   sameSite: 'none', 
   secure: true, // change to true in prod
   httpOnly: false,
@@ -63,25 +63,25 @@ const maxPlayers = ref(5)
 const canCreate = ref(false)
 const errorMessage = ref("")
 function setValidGames(){
-	if(glStore.userData.gameSettings.length != 0){
-		glStore.userData.gameSettings.forEach((setting) =>{
+	if(glStore.user.userData.gameSettings.length != 0){
+		glStore.user.userData.gameSettings.forEach((setting) =>{
 			games.value.push(setting.game)
 		})
 }
 }
 setValidGames()
 function setCurrentPlayerSettings(){
-	if(glStore.userData.gameSettings.length != 0){
-		glStore.userData.gameSettings.forEach((setting) =>{
+	if(glStore.user.userData.gameSettings.length != 0){
+		glStore.user.userData.gameSettings.forEach((setting) =>{
 			if(setting.game == game.value){
 				currentPlaySettings.value = setting
-				playerTags.value = glStore.userData.tags.concat(setting.tags)
+				playerTags.value = glStore.user.userData.tags.concat(setting.tags)
 				let currentPlayer = {
-					username: glStore.userData.username,
-					id: glStore.userData.id,
+					username: glStore.user.userData.username,
+					id: glStore.user.userData.id,
 					role:"leader",
 					tags: playerTags.value,
-					links: glStore.userData.links,
+					links: glStore.user.userData.links,
 					gameSettings: currentPlaySettings.value,
 					rank:setting.rank
 				}
@@ -118,7 +118,7 @@ async function createLobby(){
 	const lobbyInfo = await $fetch('http://localhost:8081/api/test/lobbyCreate', {
             method:"POST",
 			headers:{
-                'x-access-token': glStore.userData.accessToken
+                'x-access-token': glStore.user.accessToken
             },
             body:{
 				name: name.value,
@@ -151,7 +151,7 @@ async function getPlayer(){
                 method:'POST',
                 lazy:true,
                 headers:{
-                    'x-access-token': glStore.userData.accessToken
+                    'x-access-token': glStore.user.accessToken
                 },
                 body:{
                     username: testPlayer.value,

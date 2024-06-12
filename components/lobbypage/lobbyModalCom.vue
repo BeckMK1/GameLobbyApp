@@ -17,7 +17,7 @@
                     <p v-else>About Lobby</p>
                 </div>
             </div>
-            <div class="btn" v-if="glStore.userData.inLobby == '' && canJoin == true" @click="joinLobby(data._id)">Join</div>
+            <div class="btn" v-if="glStore.user.userData.inLobby == '' && canJoin == true" @click="joinLobby(data._id)">Join</div>
             <div class="noGameProfile" v-if="canJoin == false">
                <p>Game profile missing</p> 
                 <NuxtLink to="/settings">make a game profile here</NuxtLink>
@@ -32,7 +32,7 @@
 import { useGlStore } from '../../stores/glStore';
 const glStore = useGlStore()
 const authCookie = useCookie('authCookie', {
-  default: () => (null),
+    default: () => ([]),
   sameSite: 'none', 
   secure: true, // change to true in prod
   httpOnly: false,
@@ -47,21 +47,21 @@ const porps = defineProps({
     lobbyData:Array
 })
 function setCurrentPlayerSettings(){
-	if(glStore.userData.gameSettings.length == 0){
+	if(glStore.user.userData.gameSettings.length == 0){
         canJoin.value = false
         return
     }
-    canJoin.value = glStore.userData.gameSettings.some(setting => setting.game == glStore.selectedGame)
+    canJoin.value = glStore.user.userData.gameSettings.some(setting => setting.game == glStore.selectedGame)
     if( canJoin.value == true){
-	glStore.userData.gameSettings.forEach((setting) =>{
+	glStore.user.userData.gameSettings.forEach((setting) =>{
         if(setting.game == glStore.selectedGame){
                     currentPlaySettings.value = setting
-                    playerTags.value = glStore.userData.tags.concat(setting.tags)
+                    playerTags.value = glStore.user.userData.tags.concat(setting.tags)
                     let currentPlayer = {
-                        username: glStore.userData.username,
-                        id: glStore.userData.id,
+                        username: glStore.user.userData.username,
+                        id: glStore.user.userData.id,
                         tags: playerTags.value,
-                        links: glStore.userData.links,
+                        links: glStore.user.userData.links,
                         gameSettings: currentPlaySettings.value,
                         rank:setting.rank
                     }
@@ -76,10 +76,10 @@ async function joinLobby(lobbyId){
     const lobbyInfo = await $fetch(`http://localhost:8081/api/test/lobbyJoin/${lobbyId}`,{
             method:"PATCH",
 			headers:{
-                'x-access-token': glStore.userData.accessToken
+                'x-access-token': glStore.user.accessToken
             },
             body:{
-                id: glStore.userData.id,
+                id: glStore.user.userData.id,
                 player: player.value
             }
     })

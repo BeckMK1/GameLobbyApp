@@ -26,7 +26,7 @@ const signupEmail = ref('')
 const signupPassword = ref('')
 const errorMessage = ref('')
 const authCookie = useCookie('authCookie', {
-  default: () => (null),
+    default: () => ([]),
   sameSite: 'none', 
   secure: true, // change to true in prod
   httpOnly: false,

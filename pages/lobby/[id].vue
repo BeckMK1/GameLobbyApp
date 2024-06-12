@@ -41,7 +41,7 @@
         </div>
         <div class="players">
             <h2>Players</h2>
-            <LobbypagePlayerCom v-for="player in currentLobby.players"  :playerData="player" :game="lobby.game"></LobbypagePlayerCom>
+            <LobbypagePlayerCom :isLeader="leader" v-for="player in currentLobby.players"  :playerData="player" :game="lobby.game"></LobbypagePlayerCom>
         </div>
     </div>
 </template>
@@ -49,7 +49,7 @@
     import { useGlStore } from '../stores/glStore';
     const glStore = useGlStore()
     const authCookie = useCookie('authCookie', {
-    default: () => (null),
+    default: () => ([]),
     sameSite: 'none', 
     secure: true, // change to true in prod
     httpOnly: false,
@@ -69,7 +69,7 @@ async function saveUserInfo(){
     const userInfo = await $fetch(`http://localhost:8081/api/test/updateLobbyInfo/${route.params.id}`,{
             method:"PATCH",
 			headers:{
-                'x-access-token': glStore.userData.accessToken
+                'x-access-token': glStore.user.userData.accessToken
             },
             body:{
                 status:currentLobby.value.status,
@@ -82,7 +82,7 @@ async function saveUserInfo(){
 }
 function isLeader(){
     lobby._rawValue.players.forEach(player => {
-        if(player.id == glStore.userData.id && player.role == 'leader'){
+        if(player.id == glStore.user.userData.id && player.role == 'leader'){
             leader.value = true
         }
     });
@@ -92,10 +92,10 @@ async function leaveLobby(){
     const userInfo = await $fetch(`http://localhost:8081/api/test/lobbyLeave/${route.params.id}`,{
             method:"PATCH",
 			headers:{
-                'x-access-token': glStore.userData.accessToken
+                'x-access-token': glStore.user.accessToken
             },
             body:{
-				id: glStore.userData.id,
+				id: glStore.user.userData.userData.id,
             }
     })
     authCookie.value.inLobby = ""
@@ -141,7 +141,7 @@ watch(lobby, async()=>{
     }
 }
 .lobbyInfo{
-    grid-column: 1/5;
+    grid-column: span 12;
     background-color: var(--secondaryBg);
     box-sizing: border-box;
     padding: 2rem 5rem;
@@ -188,7 +188,7 @@ watch(lobby, async()=>{
     }
 }
 .players{
-    grid-column: 5/13;
+    grid-column: span 12;
     background-color: var(--secondaryBg);
     box-sizing: border-box;
     padding: 2rem;
@@ -196,10 +196,21 @@ watch(lobby, async()=>{
     display: flex;
     flex-direction: column;
     border-radius: var(--radiusMd);
+    overflow-y: scroll;
+    box-sizing: border-box;
+    max-height: 100%;
     h2{
         text-align: center;
     }
 }
+    @media(min-width: 1550px){
+        .players{
+            grid-column: 5/13;
+        }
+        .lobbyInfo{
+            grid-column: 1/5;
+        }
+    }
 .linkInput{
     position: relative;
     
