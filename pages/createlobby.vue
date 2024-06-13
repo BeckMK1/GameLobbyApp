@@ -115,7 +115,7 @@ async function createLobby(){
 		return
 	}
 	try{
-	const lobbyInfo = await $fetch('http://localhost:8081/api/test/lobbyCreate', {
+	const lobbyInfo = await $fetch('https://gamelobbyapp-api.onrender.com/api/test/lobbyCreate', {
             method:"POST",
 			headers:{
                 'x-access-token': glStore.user.accessToken
@@ -147,7 +147,7 @@ function addtags(){
 }
 async function getPlayer(){
 	try{
-		const data = await $fetch('http://localhost:8081/api/test/usersInfo', {
+		const data = await $fetch('https://gamelobbyapp-api.onrender.com/api/test/usersInfo', {
                 method:'POST',
                 lazy:true,
                 headers:{

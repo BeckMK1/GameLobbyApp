@@ -41,7 +41,7 @@ function setPlayerLinks(){
 }
 async function kickLobby(){
     try{
-    const userInfo = await $fetch(`http://localhost:8081/api/test/lobbyLeave/${route.params.id}`,{
+    const userInfo = await $fetch(`https://gamelobbyapp-api.onrender.com/api/test/lobbyLeave/${route.params.id}`,{
             method:"PATCH",
 			headers:{
                 'x-access-token': glStore.user.accessToken

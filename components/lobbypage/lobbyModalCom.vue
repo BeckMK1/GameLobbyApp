@@ -73,7 +73,7 @@ function setCurrentPlayerSettings(){
 setCurrentPlayerSettings()
 async function joinLobby(lobbyId){
     try{
-    const lobbyInfo = await $fetch(`http://localhost:8081/api/test/lobbyJoin/${lobbyId}`,{
+    const lobbyInfo = await $fetch(`https://gamelobbyapp-api.onrender.com/api/test/lobbyJoin/${lobbyId}`,{
             method:"PATCH",
 			headers:{
                 'x-access-token': glStore.user.accessToken

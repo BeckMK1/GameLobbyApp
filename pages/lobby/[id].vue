@@ -61,12 +61,12 @@
    const newLink = ref("")
    const newTag = ref("")
    const currentLobby = ref({})
-const { data:lobby, pending, status, error, refresh } = await useFetch(`http://localhost:8081/api/test/lobbyMy/${route.params.id}`, {
+const { data:lobby, pending, status, error, refresh } = await useFetch(`https://gamelobbyapp-api.onrender.com/api/test/lobbyMy/${route.params.id}`, {
             method:'GET',
             lazy:true,
 })
 async function saveUserInfo(){
-    const userInfo = await $fetch(`http://localhost:8081/api/test/updateLobbyInfo/${route.params.id}`,{
+    const userInfo = await $fetch(`https://gamelobbyapp-api.onrender.com/api/test/updateLobbyInfo/${route.params.id}`,{
             method:"PATCH",
 			headers:{
                 'x-access-token': glStore.user.userData.accessToken
@@ -89,7 +89,7 @@ function isLeader(){
 }
 async function leaveLobby(){
     try{
-    const userInfo = await $fetch(`http://localhost:8081/api/test/lobbyLeave/${route.params.id}`,{
+    const userInfo = await $fetch(`https://gamelobbyapp-api.onrender.com/api/test/lobbyLeave/${route.params.id}`,{
             method:"PATCH",
 			headers:{
                 'x-access-token': glStore.user.accessToken

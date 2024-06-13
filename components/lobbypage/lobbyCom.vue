@@ -38,7 +38,7 @@ const porps = defineProps({
 })
 const currentLobby = ref([])
 const modelOpen = ref(false)
-const { data:lobbies, pending, status, error, refresh } = await useFetch('http://localhost:8081/api/test/lobby', {
+const { data:lobbies, pending, status, error, refresh } = await useFetch('https://gamelobbyapp-api.onrender.com/api/test/lobby', {
             method:'GET',
             lazy:true,
 })

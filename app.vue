@@ -24,7 +24,7 @@ const authCookie = useCookie('authCookie', {
   maxAge: 86400, // 24h 
 })
  async function getUser(){
-  const data = await $fetch(`http://localhost:8081/api/test/getUser/${glStore.user.userData.id}`, {
+  const data = await $fetch(`https://gamelobbyapp-api.onrender.com/api/test/getUser/${glStore.user.userData.id}`, {
 					method:'GET',
 					lazy:true,
 					headers:{

@@ -66,7 +66,7 @@ function checksignUpvaild(){
 async function login(){
     if(checkLoginvaild() == true){
     try{
-    const loginInfo = await $fetch('http://localhost:8081/api/auth/signin', {
+    const loginInfo = await $fetch('https://gamelobbyapp-api.onrender.com/api/auth/signin', {
             method:"POST",
             body:{
                 username: loginUsername.value,
@@ -83,7 +83,7 @@ async function login(){
 async function signUp(){
     if(checksignUpvaild() == true){
         try{
-    const loginInfo = await $fetch('http://localhost:8081/api/auth/signup', {
+    const loginInfo = await $fetch('https://gamelobbyapp-api.onrender.com/api/auth/signup', {
             method:"POST",
             body:{
                 username: signupUsername.value,

@@ -56,7 +56,7 @@ const selectTags = ref([
 getLobbies()
 async function getLobbies(){
     try{
-    const sendFilter = await $fetch('http://localhost:8081/api/test/filteredLobbies', {
+    const sendFilter = await $fetch('https://gamelobbyapp-api.onrender.com/api/test/filteredLobbies', {
             method:"POST",
             body:{
                 game: game.value,

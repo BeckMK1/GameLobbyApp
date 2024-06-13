@@ -5,8 +5,8 @@ export default defineNuxtConfig({
     ['@pinia/nuxt', {storesDirs: ['./stores/**']}]
   ],
   css: [
-    '@fortawesome/fontawesome-svg-core/styles.css',
-    '~/assets/css/main.css'
+    '~/assets/css/main.css',
+    '@fortawesome/fontawesome-svg-core/styles.css'
     ],
     build: {
       transpile: ['@fortawesome/vue-fontawesome']

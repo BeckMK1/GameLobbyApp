@@ -46,7 +46,7 @@ function removeLink(link){
 async function updataProfile(){
 	if(validateProfile() == true){
 		try{
-		const update = await  $fetch(`http://localhost:8081/api/test/updataUserInfo/${glStore.user.id}`, {
+		const update = await  $fetch(`https://gamelobbyapp-api.onrender.com/api/test/updataUserInfo/${glStore.user.id}`, {
 				method:"PATCH",
 				headers:{
 					'x-access-token': glStore.user.accessToken

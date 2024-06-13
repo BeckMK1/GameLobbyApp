@@ -131,7 +131,7 @@ function createSetting(){
 async function saveFilter(filter){
 	if(validateFilter() == true){
 		try{
-		const update = await  $fetch(`http://localhost:8081/api/test/createGameFilters/${glStore.user.userData.id}`, {
+		const update = await  $fetch(`https://gamelobbyapp-api.onrender.com/api/test/createGameFilters/${glStore.user.userData.id}`, {
 				method:"PATCH",
 				headers:{
 					'x-access-token': glStore.user.accessToken
@@ -151,7 +151,7 @@ async function saveFilter(filter){
 			console.log(err)
 		}
 		try{
-			const data = await $fetch(`http://localhost:8081/api/test/getUser/${glStore.user.userData.id}`, {
+			const data = await $fetch(`https://gamelobbyapp-api.onrender.com/api/test/getUser/${glStore.user.userData.id}`, {
 					method:'GET',
 					lazy:true,
 					headers:{
@@ -167,7 +167,7 @@ async function saveFilter(filter){
 async function updateFilter(filter){
 	if(validateFilter() == true){
 		try{
-		const update = await  $fetch(`http://localhost:8081/api/test/upadeteGameFilters/${glStore.user.userData.id}`, {
+		const update = await  $fetch(`https://gamelobbyapp-api.onrender.com/api/test/upadeteGameFilters/${glStore.user.userData.id}`, {
 				method:"PATCH",
 				headers:{
 					'x-access-token': glStore.user.accessToken
@@ -187,7 +187,7 @@ async function updateFilter(filter){
 			console.log(err)
 		}
 		try{
-			const data = await $fetch(`http://localhost:8081/api/test/getUser/${glStore.user.userData.id}`, {
+			const data = await $fetch(`https://gamelobbyapp-api.onrender.com/api/test/getUser/${glStore.user.userData.id}`, {
 					method:'GET',
 					lazy:true,
 					headers:{
@@ -203,7 +203,7 @@ async function updateFilter(filter){
 async function saveSetting(gameSetting){
 	if(validateSettings() == true){
 		try{
-		const update = await  $fetch(`http://localhost:8081/api/test/createGamesettings/${glStore.user.userData.id}`, {
+		const update = await  $fetch(`https://gamelobbyapp-api.onrender.com/api/test/createGamesettings/${glStore.user.userData.id}`, {
 				method:"PATCH",
 				headers:{
 					'x-access-token': glStore.user.accessToken
@@ -224,7 +224,7 @@ async function saveSetting(gameSetting){
 			console.log(err)
 		}
 		try{
-			const data = await $fetch(`http://localhost:8081/api/test/getUser/${glStore.user.userData.id}`, {
+			const data = await $fetch(`https://gamelobbyapp-api.onrender.com/api/test/getUser/${glStore.user.userData.id}`, {
 					method:'GET',
 					lazy:true,
 					headers:{
@@ -240,7 +240,7 @@ async function saveSetting(gameSetting){
 async function updateGameSetting(gameSetting){
 	if(validateSettings() == true){
 		try{
-		const update = await  $fetch(`http://localhost:8081/api/test/upadeteGamesettings/${glStore.user.userData.id}`, {
+		const update = await  $fetch(`https://gamelobbyapp-api.onrender.com/api/test/upadeteGamesettings/${glStore.user.userData.id}`, {
 				method:"PATCH",
 				headers:{
 					'x-access-token': glStore.user.accessToken
@@ -262,7 +262,7 @@ async function updateGameSetting(gameSetting){
 			console.log(err)
 		}
 		try{
-			const data = await $fetch(`http://localhost:8081/api/test/getUser/${glStore.user.userData.id}`, {
+			const data = await $fetch(`https://gamelobbyapp-api.onrender.com/api/test/getUser/${glStore.user.userData.id}`, {
 					method:'GET',
 					lazy:true,
 					headers:{
