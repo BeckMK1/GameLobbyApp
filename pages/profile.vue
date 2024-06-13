@@ -7,7 +7,10 @@
 				<input type="text" v-model="link" placeholder="link">
 				<div class="addBtn" @click="links.push(link)"><font-awesome-icon icon="fa-solid fa-plus" /></div>
 			</div>
-			<div  class="links tagsContainer"><div class="tagContainer" v-for="linkTag in links"><div class="removeBtn" @click="removeLink(link)"><font-awesome-icon icon="fa-solid fa-x" /></div><LinkConverterCom :link="linkTag"></LinkConverterCom></div></div>
+			<div  class="links tagsContainer"><div class="tagContainer" v-for="linkTag in links">
+				<div class="removeBtn" @click="removeLink(link)"><font-awesome-icon icon="fa-solid fa-x" /></div>
+				<LinkConverterCom :link="linkTag"></LinkConverterCom></div>
+			</div>
 		</div>
 		<div class="settings-input">
 			<div class="addTag">
@@ -24,12 +27,12 @@
 <script setup>
 import { useGlStore } from '../stores/glStore';
 const glStore = useGlStore()
-const displayName = ref(glStore.user.displayName)
-const aboutMe = ref(glStore.user.aboutMe)
+const displayName = ref(glStore.user.userData.displayName)
+const aboutMe = ref(glStore.user.userData.aboutMe)
 const link = ref("")
-const links = ref(glStore.user.links)
+const links = ref(glStore.user.userData.links)
 const tag = ref("")
-const tags = ref(glStore.user.tags)
+const tags = ref(glStore.user.userData.tags)
 const errorMessage = ref("")
 const confrimMessage = ref("")
 function validateProfile(){
@@ -46,7 +49,7 @@ function removeLink(link){
 async function updataProfile(){
 	if(validateProfile() == true){
 		try{
-		const update = await  $fetch(`http://localhost:8081/api/test/updataUserInfo/${glStore.user.id}`, {
+		const update = await  $fetch(`http://localhost:8081/api/test/updataUserInfo/${glStore.user.userData.id}`, {
 				method:"PATCH",
 				headers:{
 					'x-access-token': glStore.user.accessToken

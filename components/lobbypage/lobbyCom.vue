@@ -18,7 +18,7 @@
                 </div>
             </div>
             <div class="lobby-tags">
-                <div class="tag" v-for="tag in lobby.tags">{{ tag }}</div>
+                <div class="tag" v-for="tag in lobby.tags.slice(0, 3)">{{ tag }}</div>
             </div>
         </div>
         <Teleport to="body">
@@ -114,11 +114,13 @@ watch(currentLobby.value, async () =>{
             display: flex;
             gap: 0.5rem;
             margin-top: 0.5rem;
+            flex-wrap: wrap;
             .tag{
                 background-color: var(--primaryBg);
                 padding: 0.25rem 0.75rem;
                 padding-bottom: 0.45rem;
                 border-radius: var(--radiusMd);
+                white-space: nowrap;
             }
         }
     }

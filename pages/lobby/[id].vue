@@ -21,8 +21,8 @@
                 <option value="idle">idle</option>
             </select>
             <select v-model="currentLobby.mode">
-                <option value="ranked">ranked</option>
-                <option value="unranked">unranked</option>
+                <option value="Ranked">Ranked</option>
+                <option value="Unranked">Unranked</option>
             </select>
             <label>Tags</label>
             <div class="linkInput">
@@ -35,7 +35,7 @@
 				<input type="text" v-model="newLink" placeholder="Link">
 				<div class="addBtn" @click="currentLobby.links.push(newTag)"><font-awesome-icon icon="fa-solid fa-plus" /></div>
 			</div>
-            <div class="links"><div v-for="link in currentLobby.links" class="link">{{ link }}</div></div>
+            <div class="links"><div v-for="link in currentLobby.links" class="link"><LinkConverterCom :link="link"></LinkConverterCom></div></div>
             <div class="inActiveTextarea">{{ currentLobby.about }}</div>
             <button @click="saveUserInfo">save</button>
         </div>
@@ -95,7 +95,7 @@ async function leaveLobby(){
                 'x-access-token': glStore.user.accessToken
             },
             body:{
-				id: glStore.user.userData.userData.id,
+				id: glStore.user.userData.id,
             }
     })
     authCookie.value.inLobby = ""
@@ -169,6 +169,9 @@ watch(lobby, async()=>{
         height: 100px;
         border-radius: var(--radiusMd);
         box-sizing: border-box;
+        display: flex;
+        gap: 0.25rem;
+        flex-wrap: wrap;
     }
     .links{
         width: 100%;
