@@ -26,8 +26,8 @@
 				<input type="text" v-model="testPlayer" placeholder="invite player">
 				<div class="addBtn" @click="getPlayer"><font-awesome-icon icon="fa-solid fa-plus" /></div>
 			</div>
-			<div class="players tagsContainer"><div v-if="playerError == false" class="tag tagDark" v-for="player in players">{{ player.username }}</div></div>
-			<div class="playerError" v-if="playerError == true">player not found</div>
+			<div class="players tagsContainer"><div class="tag tagDark" v-for="player in players">{{ player.username }}</div></div>
+			<div class="playerError" v-if="playerError != ''">{{playerError}}</div>
 		</div>
         <ErrorCom :error-message="errorMessage"></ErrorCom>
 		<button @click="createLobby">Create Lobby</button>
@@ -45,7 +45,7 @@ const authCookie = useCookie('authCookie', {
   maxAge: 86400, // 24h 
 })
 const currentPlaySettings = ref({})
-const playerError = ref(false)
+const playerError = ref("")
 const testPlayer = ref('')
 const games = ref([])
 const link = ref("")
@@ -157,9 +157,20 @@ async function getPlayer(){
                     username: testPlayer.value,
                 }
     })
-	players.value.push(data)
+	console.log(players.value.filter(player => player.username == data.username).length != 0)
+	if(players.value.filter(player => player.username == data.username).length != 0){
+		playerError.value = 'player already inlobby'
+		return
+	}
+	if(players.value.length < maxPlayers.value){
+		players.value.push(data)
+		return
+	}
+
+	playerError.value = 'player limet reached'
 	} catch(err){
-		playerError.value = true
+		console.log(err)
+		playerError.value = 'player not found'
 	}
 }
 watch(game, async()=>{

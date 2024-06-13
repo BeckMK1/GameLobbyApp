@@ -12,7 +12,7 @@
         <div class="player-links">
             <div class="link" v-for="link in playerLinks"><LinkConverterCom :link="link"></LinkConverterCom></div>
         </div>
-        <div v-if="isLeader" class="player-kick" @click="kickLobby()">
+        <div v-if="isLeader, playerData.role != 'leader'" class="player-kick" @click="kickLobby()">
             Kick
         </div>
     </div>

@@ -142,6 +142,8 @@ async function joinLobby(lobbyId){
             box-sizing: border-box;
             padding: 1rem;
             border-radius: var(--radiusMd);
+            flex-wrap: wrap;
+            height: fit-content;
             
         }
         .about{

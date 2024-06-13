@@ -118,6 +118,7 @@ select{
   width: fit-content;
   border-radius: var(--radiusMd);
   box-sizing: border-box;
+  white-space: nowrap;
 }
 .tagDark{
   background-color: var(--secondaryBg);

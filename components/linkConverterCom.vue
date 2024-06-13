@@ -1,5 +1,6 @@
 <template>
-	<div class="convertedLink" ><a class="tag tagDark" target="_blank" :href="convertedLink.link">{{ convertedLink.name }}</a></div>
+	<div class="convertedLink" ><a class="tag tagDark" target="_blank" 
+    :href="convertedLink.link">{{ convertedLink.name }}</a></div>
 </template>
 <script setup>
 const props = defineProps({
